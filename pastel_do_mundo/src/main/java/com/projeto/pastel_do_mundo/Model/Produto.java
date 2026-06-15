@@ -9,7 +9,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table (name = "Produto")
+@Table (name = "PRODUTO")
 public class Produto {
 
     @Id
