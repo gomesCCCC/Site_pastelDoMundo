@@ -10,8 +10,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.projeto.pastel_do_mundo.Model.Cliente;
 import com.projeto.pastel_do_mundo.Service.ClienteService;
+import com.projeto.pastel_do_mundo.dto.clienteRequestDTO;
+import com.projeto.pastel_do_mundo.dto.clienteResponseDTO;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/cliente")
@@ -24,18 +27,18 @@ public class clienteController {
     }
 
     @GetMapping
-    public List<Cliente> listarTodos() {
+    public List<clienteResponseDTO> listarTodos() {
         return clienteService.listarCliente();
     }
 
     @GetMapping("/{id}")
-    public Cliente buscar(@PathVariable Long id) {
+    public clienteResponseDTO buscar(@PathVariable Long id) {
         return clienteService.buscarClienteId(id);
     }
 
     @PostMapping
-    public Cliente Salvar(@RequestBody Cliente cliente) {
-        return clienteService.cadastrarCliente(cliente);
+    public clienteResponseDTO Salvar(@Valid @RequestBody clienteRequestDTO dto) {
+        return clienteService.cadastrarCliente(dto);
     }
 
     @DeleteMapping("/{id}")

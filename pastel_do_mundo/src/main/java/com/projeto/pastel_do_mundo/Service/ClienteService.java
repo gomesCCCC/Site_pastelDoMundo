@@ -1,11 +1,14 @@
 package com.projeto.pastel_do_mundo.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import com.projeto.pastel_do_mundo.Model.Cliente;
 import com.projeto.pastel_do_mundo.Repository.ClienteRepository;
+import com.projeto.pastel_do_mundo.dto.clienteRequestDTO;
+import com.projeto.pastel_do_mundo.dto.clienteResponseDTO;
 
 
 @Service
@@ -18,18 +21,43 @@ public class ClienteService {
         this.clienteRepository = clienteRepository;
     }
 
-    public List<Cliente> listarCliente() {
-        return clienteRepository.findAll();
+    
+    public List<clienteResponseDTO> listarCliente() {
+        return clienteRepository.findAll()
+        .stream()
+        .map(this::toResponseDTO)
+        .collect(Collectors.toList());
     }
-    public Cliente cadastrarCliente(Cliente cliente) {
-        return clienteRepository.save(cliente);
+    public clienteResponseDTO cadastrarCliente(clienteRequestDTO dto) {
+        Cliente cliente = new Cliente();
+
+        cliente.setId(dto.getId());
+        cliente.setNome(dto.getNome());
+        cliente.setEmail(dto.getEmail());
+        cliente.setSenha(dto.getSenha());
+
+        Cliente salvo = clienteRepository.save(cliente);
+
+        return toResponseDTO(salvo);
     }
+    
 
     public void apagarCliente(Long id) {
         clienteRepository.deleteById(id);
     }
 
-    public Cliente buscarClienteId(Long id) {
-        return clienteRepository.findById(id).orElseThrow(() -> new RuntimeException("cliente não encontrado"));
+    public clienteResponseDTO buscarClienteId(Long id) {
+        Cliente cliente = clienteRepository.findById(id)
+        .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+
+        return toResponseDTO(cliente);
+    }
+
+    private clienteResponseDTO toResponseDTO(Cliente cliente) {
+        clienteResponseDTO dto = new clienteResponseDTO();
+        dto.setId(cliente.getId());
+        dto.setNome(cliente.getNome());
+        dto.setEmail(cliente.getEmail());
+        return dto;
     }
 }
