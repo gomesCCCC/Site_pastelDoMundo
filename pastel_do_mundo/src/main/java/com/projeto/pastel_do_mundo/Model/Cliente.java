@@ -29,7 +29,7 @@ public class Cliente {
         this.senha = senha;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
