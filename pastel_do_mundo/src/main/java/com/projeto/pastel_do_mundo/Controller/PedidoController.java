@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projeto.pastel_do_mundo.Service.PedidoService;
+import com.projeto.pastel_do_mundo.dto.CheckoutRequestDTO;
 import com.projeto.pastel_do_mundo.dto.pedidoRequestDTO;
 import com.projeto.pastel_do_mundo.dto.pedidoResponseDTO;
 
@@ -34,6 +35,11 @@ public class PedidoController {
     @GetMapping("/{id}")
     public pedidoResponseDTO localizarPedido(@PathVariable Long id) {
         return pedidoService.acharPorIdPedido(id);
+    }
+
+    @PostMapping("/checkout")
+    public pedidoResponseDTO checkout(@RequestBody CheckoutRequestDTO dto) {
+        return pedidoService.checkout(dto);
     }
 
     @PostMapping

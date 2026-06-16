@@ -1,8 +1,10 @@
 package com.projeto.pastel_do_mundo.Model;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -24,8 +26,8 @@ public class Pedido {
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
-    @OneToMany(mappedBy = "pedido")
-    private List<ItemPedido> itens;
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
+    private List<ItemPedido> itens = new ArrayList<>();
 
     private String nome;
     private String status;
@@ -80,6 +82,14 @@ public class Pedido {
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
+    }
+
+    public List<ItemPedido> getItens() {
+    return itens;
+    }
+
+    public void setItens(List<ItemPedido> itens) {
+    this.itens = itens;
     }
     
     

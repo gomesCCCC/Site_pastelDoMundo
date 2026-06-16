@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 public class pedidoResponseDTO {
 
     private Long id;
+     private String nomePedido;
+    private String nomeCliente;
     private String nome;
     private String status;
     private BigDecimal total;
@@ -33,6 +35,18 @@ public class pedidoResponseDTO {
     public void setTotal(BigDecimal total) {
         this.total = total;
     }
+    public String getNomePedido() {
+        return nomePedido;
+    }
+    public void setNomePedido(String nomePedido) {
+        this.nomePedido = nomePedido;
+    }
+    public String getNomeCliente() {
+        return nomeCliente;
+    }
+    public void setNomeCliente(String nomeCliente) {
+        this.nomeCliente = nomeCliente;
+    }
 
-    
+        
 }
