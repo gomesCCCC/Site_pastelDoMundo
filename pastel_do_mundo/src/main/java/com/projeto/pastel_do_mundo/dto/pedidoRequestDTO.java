@@ -1,37 +1,17 @@
 package com.projeto.pastel_do_mundo.dto;
 
-import java.math.BigDecimal;
-
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.PositiveOrZero;
-
 public class pedidoRequestDTO {
 
-    private Long id;
-    
-    @NotBlank (message = "Pedido precisa de um cliente")
-    private String nome;
 
-    @NotBlank(message = "é necessário fornece status")
+    private Long clienteId;
     private String status;
 
-    @PositiveOrZero(message= "precisa ser maior ou igual a 0")
-    private BigDecimal total;
-
-    public Long getId() {
-        return id;
+    public Long getClienteId() {
+        return clienteId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setClienteId(Long clienteId) {
+        this.clienteId = clienteId;
     }
 
     public String getStatus() {
@@ -41,14 +21,5 @@ public class pedidoRequestDTO {
     public void setStatus(String status) {
         this.status = status;
     }
-
-    public BigDecimal getTotal() {
-        return total;
-    }
-
-    public void setTotal(BigDecimal total) {
-        this.total = total;
-    }
-
 
 }

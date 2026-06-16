@@ -1,11 +1,14 @@
 package com.projeto.pastel_do_mundo.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.projeto.pastel_do_mundo.Model.Cliente;
 import com.projeto.pastel_do_mundo.Model.Pedido;
+import com.projeto.pastel_do_mundo.Repository.ClienteRepository;
 import com.projeto.pastel_do_mundo.Repository.PedidoRepository;
 import com.projeto.pastel_do_mundo.dto.pedidoRequestDTO;
 import com.projeto.pastel_do_mundo.dto.pedidoResponseDTO;
@@ -15,9 +18,12 @@ import com.projeto.pastel_do_mundo.dto.pedidoResponseDTO;
 public class PedidoService {
 
     private final PedidoRepository pedidoRepository;
+    private final ClienteRepository clienteRepository;
 
-    public PedidoService(PedidoRepository pedidoRepository) {
+    public PedidoService(PedidoRepository pedidoRepository,
+                         ClienteRepository clienteRepository) {
         this.pedidoRepository = pedidoRepository;
+        this.clienteRepository = clienteRepository;
     }
 
     public List<pedidoResponseDTO> listarPedido() {
@@ -27,19 +33,22 @@ public class PedidoService {
         .collect(Collectors.toList());
     }
 
-    public pedidoResponseDTO fazerPedido(pedidoRequestDTO dto) {
-        Pedido pedido = new Pedido();
+public pedidoResponseDTO fazerPedido(pedidoRequestDTO dto) {
 
-        pedido.setId(dto.getId());
-        pedido.setNome(dto.getNome());
-        pedido.setStatus(dto.getStatus());
-        pedido.setTotal(dto.getTotal());
+    Cliente cliente = clienteRepository.findById(dto.getClienteId())
+            .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
-        Pedido salvo = pedidoRepository.save(pedido);
+    Pedido pedido = new Pedido();
 
-        return toResponseDTO(pedido);
+    pedido.setCliente(cliente);
+    pedido.setStatus(dto.getStatus());
 
-    }
+    pedido.setTotal(BigDecimal.ZERO);
+
+    Pedido salvo = pedidoRepository.save(pedido);
+
+    return toResponseDTO(salvo);
+}
 
     public pedidoResponseDTO acharPorIdPedido(Long id) {
         Pedido pedido =  pedidoRepository.findById(id).orElseThrow(() -> new RuntimeException("pedido não localizado"));
@@ -57,6 +66,7 @@ public class PedidoService {
         dto.setNome(pedido.getNome());
         dto.setStatus(pedido.getStatus());
         dto.setTotal(pedido.getTotal());
+        dto.setNome(pedido.getCliente().getNome());
 
         return dto;
     }

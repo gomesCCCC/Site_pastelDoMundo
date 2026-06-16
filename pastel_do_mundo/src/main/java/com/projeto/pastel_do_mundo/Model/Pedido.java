@@ -1,11 +1,15 @@
 package com.projeto.pastel_do_mundo.Model;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -14,8 +18,15 @@ public class Pedido {
 
     @Id
     @GeneratedValue (strategy= GenerationType.IDENTITY)
-
     private long id;
+
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
+
+    @OneToMany(mappedBy = "pedido")
+    private List<ItemPedido> itens;
+
     private String nome;
     private String status;
     private BigDecimal total;
@@ -62,5 +73,14 @@ public class Pedido {
     public void setTotal(BigDecimal total) {
         this.total = total;
     }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+    
     
 }

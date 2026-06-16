@@ -1,9 +1,12 @@
 package com.projeto.pastel_do_mundo.Model;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -12,8 +15,11 @@ public class Cliente {
 
     @Id
     @GeneratedValue (strategy= GenerationType.IDENTITY)
-
     private Long id;
+
+    @OneToMany(mappedBy = "cliente")
+    private List<Pedido> pedidos;
+ 
     private String nome;
     private String email;
     private String senha;

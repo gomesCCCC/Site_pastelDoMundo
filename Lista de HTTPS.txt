@@ -1,0 +1,29 @@
+CLIENTE
+POST   http://localhost:8080/clientes
+GET    http://localhost:8080/clientes
+GET    http://localhost:8080/clientes/{id}
+DELETE http://localhost:8080/clientes/{id}
+
+--------------------------------------
+
+PRODUTO
+POST   http://localhost:8080/produtos
+GET    http://localhost:8080/produtos
+GET    http://localhost:8080/produtos/{id}
+DELETE http://localhost:8080/produtos/{id}
+
+--------------------------------------
+
+PEDIDO
+POST   http://localhost:8080/pedidos
+GET    http://localhost:8080/pedidos
+GET    http://localhost:8080/pedidos/{id}
+DELETE http://localhost:8080/pedidos/{id}
+
+--------------------------------------
+
+ITEM PEDIDO
+POST   http://localhost:8080/itens-pedido
+GET    http://localhost:8080/itens-pedido
+GET    http://localhost:8080/itens-pedido/{id}
+DELETE http://localhost:8080/itens-pedido/{id}
