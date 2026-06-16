@@ -1,15 +1,20 @@
 package com.projeto.pastel_do_mundo.dto;
 
 import java.math.BigDecimal;
+import java.util.List;
+
+import com.projeto.pastel_do_mundo.Model.StatusPedido;
 
 public class pedidoResponseDTO {
 
     private Long id;
-     private String nomePedido;
+    private String nomePedido;
+    private Long clienteId;
     private String nomeCliente;
     private String nome;
-    private String status;
+    private StatusPedido status;
     private BigDecimal total;
+    private List<ItemPedidoResponseDTO> itens;
     
     public Long getId() {
         return id;
@@ -23,10 +28,10 @@ public class pedidoResponseDTO {
     public void setNome(String nome) {
         this.nome = nome;
     }
-    public String getStatus() {
+    public StatusPedido getStatus() {
         return status;
     }
-    public void setStatus(String status) {
+    public void setStatus(StatusPedido status) {
         this.status = status;
     }
     public BigDecimal getTotal() {
@@ -47,6 +52,20 @@ public class pedidoResponseDTO {
     public void setNomeCliente(String nomeCliente) {
         this.nomeCliente = nomeCliente;
     }
+    public Long getClienteId() {
+        return clienteId;
+    }
+    public void setClienteId(Long clienteId) {
+        this.clienteId = clienteId;
+    }
 
-        
+    public List<ItemPedidoResponseDTO> getItens() {
+        return itens;
+    }
+
+    public void setItens(List<ItemPedidoResponseDTO> itens) {
+        this.itens = itens;
+    }
+
+    
 }

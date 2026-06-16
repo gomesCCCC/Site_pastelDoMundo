@@ -11,6 +11,7 @@ import com.projeto.pastel_do_mundo.Model.Cliente;
 import com.projeto.pastel_do_mundo.Model.ItemPedido;
 import com.projeto.pastel_do_mundo.Model.Pedido;
 import com.projeto.pastel_do_mundo.Model.Produto;
+import com.projeto.pastel_do_mundo.Model.StatusPedido;
 import com.projeto.pastel_do_mundo.Repository.ClienteRepository;
 import com.projeto.pastel_do_mundo.Repository.PedidoRepository;
 import com.projeto.pastel_do_mundo.Repository.ProdutoRepository;
@@ -18,6 +19,8 @@ import com.projeto.pastel_do_mundo.dto.CheckoutRequestDTO;
 import com.projeto.pastel_do_mundo.dto.ItemCheckoutDTO;
 import com.projeto.pastel_do_mundo.dto.pedidoRequestDTO;
 import com.projeto.pastel_do_mundo.dto.pedidoResponseDTO;
+
+import jakarta.transaction.Transactional;
 
 @Service
 
@@ -50,13 +53,12 @@ public pedidoResponseDTO fazerPedido(pedidoRequestDTO dto) {
     Pedido pedido = new Pedido();
 
     pedido.setCliente(cliente);
-    pedido.setStatus(dto.getStatus());
-
+    pedido.setStatus(StatusPedido.ABERTO);
     pedido.setTotal(BigDecimal.ZERO);
 
-    Pedido salvo = pedidoRepository.save(pedido);
+Pedido salvo = pedidoRepository.save(pedido);
 
-    return toResponseDTO(salvo);
+return toResponseDTO(salvo);
 }
 
     public pedidoResponseDTO acharPorIdPedido(Long id) {
@@ -76,12 +78,12 @@ public pedidoResponseDTO fazerPedido(pedidoRequestDTO dto) {
     dto.setNomePedido(pedido.getNome());
     dto.setStatus(pedido.getStatus());
     dto.setTotal(pedido.getTotal());
-
+    dto.setClienteId(pedido.getCliente().getId());
     dto.setNomeCliente(pedido.getCliente().getNome());
-
     return dto;
     }
-
+        
+        @Transactional
         public pedidoResponseDTO checkout(CheckoutRequestDTO dto) {
 
         Cliente cliente = clienteRepository.findById(dto.getClienteId())
@@ -89,27 +91,35 @@ public pedidoResponseDTO fazerPedido(pedidoRequestDTO dto) {
 
         Pedido pedido = new Pedido();
         pedido.setCliente(cliente);
-        pedido.setStatus("ABERTO");
-
+        pedido.setStatus(StatusPedido.ABERTO);
         BigDecimal total = BigDecimal.ZERO;
 
         List<ItemPedido> itens = new ArrayList<>();
 
-        for (ItemCheckoutDTO itemDTO : dto.getItens()) {
+    for (ItemCheckoutDTO itemDTO : dto.getItens()) {
+    System.out.println("produtoId recebido: " + itemDTO.getProdutoId());
+    Produto produto = produtoRepository.findById(itemDTO.getProdutoId())
+            .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
-            Produto produto = produtoRepository.findById(itemDTO.getProdutoId())
-                    .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+    if (produto.getQuantidade() < itemDTO.getQuantidade()) {
+        throw new RuntimeException("Estoque insuficiente");
+    }
 
-            ItemPedido item = new ItemPedido();
-            item.setPedido(pedido);
-            item.setProduto(produto);
-            item.setQuantidade(itemDTO.getQuantidade());
-            item.setPrecoUni(produto.getPreco());
+    produto.setQuantidade(produto.getQuantidade() - itemDTO.getQuantidade());
+    produtoRepository.save(produto);
 
-            total = total.add(produto.getPreco()
-                    .multiply(BigDecimal.valueOf(itemDTO.getQuantidade())));
+    BigDecimal subtotal = produto.getPreco()
+        .multiply(BigDecimal.valueOf(itemDTO.getQuantidade()));
 
-            itens.add(item);
+    total = total.add(subtotal);
+
+    ItemPedido item = new ItemPedido();
+    item.setPedido(pedido);
+    item.setProduto(produto);
+    item.setQuantidade(itemDTO.getQuantidade());
+    item.setPrecoUni(produto.getPreco());
+
+    itens.add(item);
         }
 
         pedido.setItens(itens);
@@ -119,6 +129,16 @@ public pedidoResponseDTO fazerPedido(pedidoRequestDTO dto) {
 
         return toResponseDTO(salvo);
     }
+
+    public pedidoResponseDTO atualizarStatus(Long id, StatusPedido status) {
+
+    Pedido pedido = pedidoRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+
+    pedido.setStatus(status);
+
+    return toResponseDTO(pedidoRepository.save(pedido));
+}
 
 
 }

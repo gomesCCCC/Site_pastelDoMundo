@@ -6,6 +6,8 @@ import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -30,14 +32,17 @@ public class Pedido {
     private List<ItemPedido> itens = new ArrayList<>();
 
     private String nome;
-    private String status;
+
+    @Enumerated(EnumType.STRING)
+    private StatusPedido status;
+
     private BigDecimal total;
 
     public Pedido() {
 
     }
 
-    public Pedido(Long id,String nome,String status,BigDecimal total) {
+    public Pedido(Long id,String nome,StatusPedido status,BigDecimal total) {
         this.id = id;
         this.nome = nome;
         this.status = status;
@@ -60,11 +65,11 @@ public class Pedido {
         this.nome = nome;
     }
 
-    public String getStatus() {
+    public StatusPedido getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(StatusPedido status) {
         this.status = status;
     }
 
@@ -91,6 +96,8 @@ public class Pedido {
     public void setItens(List<ItemPedido> itens) {
     this.itens = itens;
     }
+
+
     
     
 }

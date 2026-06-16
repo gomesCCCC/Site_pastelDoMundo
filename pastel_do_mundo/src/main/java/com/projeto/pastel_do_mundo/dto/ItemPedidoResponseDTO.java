@@ -5,9 +5,33 @@ import java.math.BigDecimal;
 public class ItemPedidoResponseDTO {
 
     private Long id;
+    private Long produtoId;
+    private String nomeProduto;
     private int quantidade;
     private BigDecimal precoUni;
     private BigDecimal subtotal;
+
+
+    
+    public Long getProdutoId() {
+        return produtoId;
+    }
+
+    public void setProdutoId(Long produtoId) {
+        this.produtoId = produtoId;
+    }
+
+    public String getNomeProduto() {
+        return nomeProduto;
+    }
+
+    public void setNomeProduto(String nomeProduto) {
+        this.nomeProduto = nomeProduto;
+    }
+
+    public void setSubtotal(BigDecimal subtotal) {
+        this.subtotal = subtotal;
+    }
 
     public Long getId() {
         return id;
