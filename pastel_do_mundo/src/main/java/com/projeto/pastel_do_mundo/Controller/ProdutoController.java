@@ -17,7 +17,7 @@ import com.projeto.pastel_do_mundo.dto.produtoResponseDTO;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/produtos")
+@RequestMapping("/api/produtos")
 public class ProdutoController {
 
     private final ProdutoService produtoService;

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cardápio</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<header>
+    <div>Pastel do Mundo</div>
+</header>
+
+<section class="hero">
+    <h2>Cardápio</h2>
+</section>
+
+<section class="categorias">
+    <div class="categoria" th:each="c : ${categorias}" th:text="${c}"></div>
+</section>
+
+<main class="produtos">
+    <div class="card" th:each="p : ${produtos}">
+        <img th:src="${p.URLimagem}" alt="produto">
+
+        <div class="card-content">
+            <h3 th:text="${p.nome}"></h3>
+            <p th:text="${p.descricao}"></p>
+            <div class="preco" th:text="${'R$ ' + p.preco}"></div>
+
+            <form th:action="@{/carrinho/adicionar}" method="post">
+                <input type="hidden" name="produtoId" th:value="${p.id}">
+                <button class="btn" type="submit">Adicionar</button>
+            </form>
+        </div>
+    </div>
+</main>
+
+<aside class="cart-sidebar">
+    <div class="cart-header">
+        <h3>Seu pedido</h3>
+        <span th:text="${qtdCarrinho} + ' itens'">0 itens</span>
+    </div>
+
+    <div class="cart-items">
+        <div class="cart-item" th:each="item : ${carrinho}">
+            <span th:text="${item.nome}"></span>
+            <span th:text="${item.quantidade}"></span>
+        </div>
+    </div>
+
+    <div class="cart-footer">
+        <div class="cart-total">
+            Total: R$ <span th:text="${total}">0,00</span>
+        </div>
+        <button class="checkout-btn">
+            Finalizar pedido
+        </button>
+    </div>
+</aside>
+
+<div class="cart-tab">
+    Pedido
+</div>
+
+</body>
+</html>

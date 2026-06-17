@@ -31,7 +31,6 @@ public class ClienteService {
     public clienteResponseDTO cadastrarCliente(clienteRequestDTO dto) {
         Cliente cliente = new Cliente();
 
-        cliente.setId(dto.getId());
         cliente.setNome(dto.getNome());
         cliente.setEmail(dto.getEmail());
         cliente.setSenha(dto.getSenha());

@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.projeto.pastel_do_mundo.Mapper.PedidoMapper;
 import com.projeto.pastel_do_mundo.Model.Cliente;
 import com.projeto.pastel_do_mundo.Model.ItemPedido;
 import com.projeto.pastel_do_mundo.Model.Pedido;
@@ -29,19 +30,22 @@ public class PedidoService {
     private final ProdutoRepository produtoRepository;
     private final PedidoRepository pedidoRepository;
     private final ClienteRepository clienteRepository;
+    private final PedidoMapper pedidoMapper;
 
     public PedidoService(PedidoRepository pedidoRepository,
                          ClienteRepository clienteRepository,
-                         ProdutoRepository produtoRepository) {
+                         ProdutoRepository produtoRepository,
+                         PedidoMapper pedidoMapper) {
         this.pedidoRepository = pedidoRepository;
         this.clienteRepository = clienteRepository;
         this.produtoRepository = produtoRepository;
+        this.pedidoMapper = pedidoMapper;
     }
 
     public List<pedidoResponseDTO> listarPedido() {
         return pedidoRepository.findAll()
         .stream()
-        .map(this::toResponseDTO)
+        .map(pedidoMapper::toResponseDTO)
         .collect(Collectors.toList());
     }
 
@@ -127,17 +131,16 @@ return toResponseDTO(salvo);
 
         Pedido salvo = pedidoRepository.save(pedido);
 
-        return toResponseDTO(salvo);
+        return pedidoMapper.toResponseDTO(salvo);
     }
 
     public pedidoResponseDTO atualizarStatus(Long id, StatusPedido status) {
-
     Pedido pedido = pedidoRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
 
     pedido.setStatus(status);
 
-    return toResponseDTO(pedidoRepository.save(pedido));
+    return pedidoMapper.toResponseDTO(pedidoRepository.save(pedido));
 }
 
 
