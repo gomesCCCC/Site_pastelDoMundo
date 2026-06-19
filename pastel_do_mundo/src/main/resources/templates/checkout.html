@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finalizar Pedido - Pastel do Mundo</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" th:href="@{/css/checkout.css}">
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>Pastel do Mundo</h1>
+        <p>Preencha os dados abaixo para confirmar o seu pedido</p>
+    </header>
+
+    <form th:action="@{/pedidos/confirmar}" method="post">
+        
+        <div class="grid-checkout">
+            
+            <div class="secao-checkout">
+                <h2>
+                    <span class="material-symbols-outlined icon-amarelo">map_pin_heart</span>
+                    Dados de Entrega
+                </h2>
+                
+                <div class="campo-grupo">
+                    <label for="nome">Seu Nome:</label>
+                    <input type="text" id="nome" name="nomeCliente" required placeholder="Ex: João Silva">
+                </div>
+
+                <div class="campo-grupo">
+                    <label for="telefone">WhatsApp / Telefone:</label>
+                    <input type="tel" id="telefone" name="telefone" required placeholder="Ex: (11) 99999-9999">
+                </div>
+
+                <div class="campo-grupo">
+                    <label for="endereco">Endereço Completo:</label>
+                    <textarea id="endereco" name="endereco" rows="3" required placeholder="Rua, número, bairro e pontos de referência..."></textarea>
+                </div>
+            </div>
+
+            <div>
+                <div class="secao-checkout" style="margin-bottom: 20px;">
+                    <h2>
+                        <span class="material-symbols-outlined icon-amarelo">shopping_cart</span>
+                        Resumo do Pedido
+                    </h2>
+                    
+<div th:each="item : ${itens}">
+    <div class="item-resumo">
+        <span th:text="${item.quantidade} + 'x ' + ${item.produto.nome}">1x Pastel</span>
+        <span th:text="'R$ ' + ${item.id} + ',00'">R$ 10,00</span>
+    </div>
+</div>
+
+<div class="total-box">
+    Total: <span th:text="'R$ ' + ${total} + ',00'">R$ 0,00</span>
+</div>
+                </div>
+
+                <div class="secao-checkout">
+                    <h2>
+                        <span class="material-symbols-outlined icon-amarelo">credit_card</span>
+                        Forma de Pagamento
+                    </h2>
+                    
+                    <div class="opcoes-pagamento">
+                        <label class="opcao-radio">
+                            <input type="radio" name="formaPagamento" value="Pix" checked>
+                            <span>Pix (Chave na próxima tela)</span>
+                        </label>
+                        
+                        <label class="opcao-radio">
+                            <input type="radio" name="formaPagamento" value="Cartao">
+                            <span>Cartão de Crédito/Débito (Na entrega)</span>
+                        </label>
+                        
+                        <label class="opcao-radio">
+                            <input type="radio" name="formaPagamento" value="Dinheiro">
+                            <span>Dinheiro</span>
+                        </label>
+                    </div>
+
+                    <div class="campo-grupo" style="margin-top: 15px;">
+                        <label for="troco">Precisa de troco? Para quanto?</label>
+                        <input type="text" id="troco" name="trocoPara" placeholder="Ex: Troco para R$ 50,00">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <button type="submit" class="btn-enviar-pedido">Confirmar e Enviar Pedido</button>
+    </form>
+</div>
+
+</body>
+</html>

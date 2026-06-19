@@ -26,7 +26,7 @@
 
 <main class="produtos">
     <div class="card" th:each="p : ${produtos}">
-        <img th:src="${p.URLimagem}" alt="produto">
+        <img th:src="@{'/imagens/' + ${p.URLimagem}}" alt="produto">
 
         <div class="card-content">
             <h3 th:text="${p.nome}"></h3>

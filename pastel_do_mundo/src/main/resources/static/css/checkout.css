@@ -1,0 +1,154 @@
+:root {
+    --cor-principal: #ffc107;
+    --cor-secundaria: #dc3545;
+    --cor-fundo: #f8f9fa;
+    --cor-card: #ffffff;
+    --texto: #212529;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--cor-fundo);
+    color: var(--texto);
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    border-bottom: 3px dashed var(--cor-principal);
+    padding-bottom: 10px;
+}
+
+h1 {
+    color: var(--cor-secundaria);
+    margin: 0;
+}
+
+.grid-checkout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+@media (min-width: 768px) {
+    .grid-checkout {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.secao-checkout {
+    background-color: var(--cor-card);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    border-left: 5px solid var(--cor-principal);
+}
+
+h2 {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+    margin-top: 0;
+    color: var(--texto);
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.material-symbols-outlined {
+    font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.icon-amarelo {
+    color: #ffc107; 
+    margin-right: 8px;
+    font-size: 1.5rem;
+}
+
+.item-resumo {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+}
+
+.total-box {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: right;
+    margin-top: 15px;
+    color: var(--cor-secundaria);
+    border-top: 2px solid #eee;
+    padding-top: 10px;
+}
+
+.campo-grupo {
+    margin-bottom: 15px;
+}
+
+.campo-grupo label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.campo-grupo input, .campo-grupo select, .campo-grupo textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.opcoes-pagamento {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.opcao-radio {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f1f3f5;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.opcao-radio input {
+    width: auto;
+}
+
+.btn-enviar-pedido {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 15px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background 0.2s;
+}
+
+.btn-enviar-pedido:hover {
+    background-color: #218838;
+}
+
