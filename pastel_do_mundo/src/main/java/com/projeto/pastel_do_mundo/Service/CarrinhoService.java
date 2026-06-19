@@ -42,13 +42,22 @@ public class CarrinhoService {
 
         Map<Long, Integer> carrinho = listarRaw(session);
 
-        carrinho.remove(produtoId);
+        Integer quantidade = carrinho.get(produtoId);
+
+        if (quantidade == null) {
+            return;
+        }
+
+        if (quantidade <= 1) {
+            carrinho.remove(produtoId);
+        } else {
+            carrinho.put(produtoId, quantidade - 1);
+        }
 
         session.setAttribute(CARRINHO, carrinho);
     }
 
     public void limpar(HttpSession session) {
-
         session.removeAttribute(CARRINHO);
     }
 }

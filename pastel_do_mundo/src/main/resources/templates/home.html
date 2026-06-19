@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Cardápio</title>
-
+    
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -47,12 +49,21 @@
         <span th:text="${qtdCarrinho} + ' itens'">0 itens</span>
     </div>
 
-    <div class="cart-items">
-        <div class="cart-item" th:each="item : ${carrinho}">
-            <span th:text="${item.nome}"></span>
-            <span th:text="${item.quantidade}"></span>
-        </div>
-    </div>
+    <div class="cart-item" th:each="item : ${carrinho}">
+
+    <span th:text="${item.nome}"></span>
+
+    <span th:text="${item.quantidade}"></span>
+
+    <form th:action="@{/carrinho/remover}" method="post" style="display:inline;">
+        <input type="hidden" name="produtoId" th:value="${item.produtoId}">
+
+        <button type="submit" style="background:none; border:none; cursor:pointer;">
+            <span class="material-symbols-outlined">delete</span>
+        </button>
+    </form>
+
+</div>
 
     <div class="cart-footer">
         <div class="cart-total">

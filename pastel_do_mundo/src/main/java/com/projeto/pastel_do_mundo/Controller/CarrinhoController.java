@@ -40,6 +40,12 @@ public class CarrinhoController {
         return "redirect:/";
     }
 
+@PostMapping("/remover")
+public String remover(@RequestParam Long produtoId, HttpSession session) {
+    carrinhoService.remover(produtoId, session);
+    return "redirect:/";
+}
+
     @GetMapping
     public String visualizar(Model model, HttpSession session) {
 
@@ -50,23 +56,23 @@ public class CarrinhoController {
 
         for (Map.Entry<Long, Integer> entry : carrinho.entrySet()) {
 
-            produtoResponseDTO produto = produtoService.buscarProdutoPorId(entry.getKey());
+            produtoResponseDTO produto =
+                    produtoService.buscarProdutoPorId(entry.getKey());
 
             int qtd = entry.getValue();
 
-            BigDecimal subtotal = produto.getPreco()
-                    .multiply(new BigDecimal(qtd));
+            BigDecimal subtotal =
+                    produto.getPreco().multiply(BigDecimal.valueOf(qtd));
 
-            ItemCarrinhoView item = new ItemCarrinhoView(
+            itens.add(new ItemCarrinhoView(
                     produto.getId(),
                     produto.getNome(),
                     produto.getPreco(),
                     qtd,
                     subtotal
-            );
+            ));
 
             total = total.add(subtotal);
-            itens.add(item);
         }
 
         model.addAttribute("itens", itens);
