@@ -60,6 +60,8 @@ header {
     transition: 0.2s;
 }
 
+
+
 .card:hover {
     transform: translateY(-2px);
     border-color: #ddd;
@@ -81,9 +83,14 @@ header {
 }
 
 .card p {
-    font-size: 13px;
+    font-size: 12px; 
+    line-height: 1.3; 
     color: #666;
-    margin: 6px 0;
+
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }
 
 .preco {
