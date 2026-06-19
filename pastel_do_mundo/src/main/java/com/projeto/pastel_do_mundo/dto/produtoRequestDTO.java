@@ -3,6 +3,7 @@ package com.projeto.pastel_do_mundo.dto;
 import java.math.BigDecimal;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 
@@ -26,6 +27,9 @@ public class produtoRequestDTO {
 
     @PositiveOrZero (message="O estoque não pode negativo")
     private int quantidade;
+
+    @NotEmpty (message="Produto precisa de uma categoria")
+    private String categoria;
 
     public Long getId() {
         return id;
@@ -81,6 +85,14 @@ public class produtoRequestDTO {
 
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
     }
 
     

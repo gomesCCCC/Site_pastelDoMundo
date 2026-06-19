@@ -22,12 +22,13 @@ public class Produto {
     private String descricao;
     private char tamanho;
     private int quantidade;
+    private String categoria;
 
     public Produto() {
 
     }
 
-    public Produto(Long id,String nome,BigDecimal preco,String URLimagem,String descricao, char tamanho, int quantidade) {
+    public Produto(Long id,String nome,BigDecimal preco,String URLimagem,String descricao, char tamanho, int quantidade, String categoria) {
         this.id = id;
         this.nome = nome;
         this.preco = preco;
@@ -35,6 +36,7 @@ public class Produto {
         this.descricao = descricao;
         this.tamanho = tamanho;
         this.quantidade = quantidade;
+        this.categoria = categoria;
     }
 
     public long getId() {
@@ -91,6 +93,14 @@ public class Produto {
 
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
     }
 
     

@@ -48,11 +48,20 @@ public class ProdutoService {
         produto.setTamanho(dto.getTamanho());
         produto.setQuantidade(dto.getQuantidade());
         produto.setDescricao(dto.getDescricao());
+        produto.setCategoria(dto.getCategoria());
 
         Produto salvo = produtoRepository.save(produto);
 
         return toResponseDTO(salvo);
     }
+
+    public List<produtoResponseDTO> listarPorCategoria(String categoria) {
+    return produtoRepository.findAll()
+        .stream()
+        .filter(p -> categoria.equals(p.getCategoria()))
+        .map(this::toResponseDTO)
+        .collect(Collectors.toList());
+}
 
     public void eliminarProduto(Long id) {
         produtoRepository.deleteById(id);
@@ -67,6 +76,7 @@ public class ProdutoService {
         dto.setQuantidade(produto.getQuantidade());
         dto.setTamanho(produto.getTamanho());
         dto.setDescricao(produto.getDescricao());
+        dto.setCategoria(produto.getCategoria());
         return dto;
     }
 

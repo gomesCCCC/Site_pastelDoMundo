@@ -8,6 +8,7 @@ import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.projeto.pastel_do_mundo.Model.ItemCarrinhoView;
 import com.projeto.pastel_do_mundo.Service.CarrinhoService;
@@ -72,4 +73,16 @@ public String home(Model model, HttpSession session) {
 
     return "home";
 }
+
+@GetMapping("/categoria")
+public String porCategoria(@RequestParam String categoria, Model model) {
+
+    model.addAttribute("produtos",
+        produtoService.listarPorCategoria(categoria)
+    );
+
+    return "home";
+}
+
+
 }

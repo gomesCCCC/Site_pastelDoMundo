@@ -11,6 +11,7 @@ public class produtoResponseDTO {
     private String descricao;
     private char tamanho;
     private int quantidade;
+    private String categoria;
 
     public Long getId() {
         return id;
@@ -68,4 +69,13 @@ public class produtoResponseDTO {
         this.quantidade = quantidade;
     }
 
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
+    
 }
