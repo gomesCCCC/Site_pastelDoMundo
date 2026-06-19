@@ -8,9 +8,9 @@ public class CarrinhoItem {
     private java.math.BigDecimal preco;
     private int quantidade;
 
-    public java.math.BigDecimal getSubtotal() {
-        return preco.multiply(new java.math.BigDecimal(quantidade));
-    }
+public BigDecimal getSubtotal() {
+    return preco.multiply(BigDecimal.valueOf(quantidade));
+}
 
     public Long getProdutoId() {
         return produtoId;
@@ -43,5 +43,6 @@ public class CarrinhoItem {
     public void setQuantidade(int quantidade) {
         this.quantidade = quantidade;
     }
+
     
 }

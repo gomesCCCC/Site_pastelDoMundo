@@ -27,6 +27,11 @@ public class ProdutoService {
         .collect(Collectors.toList());
     }
 
+    public Produto buscarEntityPorId(Long id) {
+    return produtoRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Produto não encontrado: " + id));
+}
+
     public produtoResponseDTO buscarProdutoPorId(Long id) {
         Produto produto = produtoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Produto não encontrado"));

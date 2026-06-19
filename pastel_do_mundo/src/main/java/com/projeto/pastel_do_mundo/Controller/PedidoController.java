@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.projeto.pastel_do_mundo.Model.StatusPedido;
 import com.projeto.pastel_do_mundo.Service.PedidoService;
-import com.projeto.pastel_do_mundo.dto.CheckoutRequestDTO;
 import com.projeto.pastel_do_mundo.dto.pedidoRequestDTO;
 import com.projeto.pastel_do_mundo.dto.pedidoResponseDTO;
 
@@ -40,10 +39,7 @@ public class PedidoController {
         return pedidoService.acharPorIdPedido(id);
     }
 
-    @PostMapping("/checkout")
-    public pedidoResponseDTO checkout(@RequestBody CheckoutRequestDTO dto) {
-        return pedidoService.checkout(dto);
-    }
+
 
     @PostMapping
     public pedidoResponseDTO cadastrarPedido(@Valid @RequestBody pedidoRequestDTO dto) {

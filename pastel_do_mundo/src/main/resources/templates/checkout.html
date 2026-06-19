@@ -50,13 +50,13 @@
                     
 <div th:each="item : ${itens}">
     <div class="item-resumo">
-        <span th:text="${item.quantidade} + 'x ' + ${item.produto.nome}">1x Pastel</span>
-        <span th:text="'R$ ' + ${item.id} + ',00'">R$ 10,00</span>
+        <span th:text="${item.quantidade + 'x ' + item.nome}"></span>
+        <span th:text="'R$ ' + ${item.subtotal}"></span>
     </div>
 </div>
 
 <div class="total-box">
-    Total: <span th:text="'R$ ' + ${total} + ',00'">R$ 0,00</span>
+   Total: <span th:text="'R$ ' + ${total}"></span>
 </div>
                 </div>
 

@@ -1,43 +1,54 @@
 package com.projeto.pastel_do_mundo.Service;
 
-import com.projeto.pastel_do_mundo.dto.produtoResponseDTO;
-import jakarta.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import jakarta.servlet.http.HttpSession;
 
 @Service
 public class CarrinhoService {
 
-    private static final String CART_KEY = "carrinho";
+    private static final String CARRINHO = "carrinho";
 
     @SuppressWarnings("unchecked")
-    private Map<Long, Integer> getCarrinho(HttpSession session) {
-        Object carrinho = session.getAttribute(CART_KEY);
+    public Map<Long, Integer> listarRaw(HttpSession session) {
+
+        Map<Long, Integer> carrinho =
+                (Map<Long, Integer>) session.getAttribute(CARRINHO);
 
         if (carrinho == null) {
-            carrinho = new HashMap<Long, Integer>();
-            session.setAttribute(CART_KEY, carrinho);
+            carrinho = new HashMap<>();
+            session.setAttribute(CARRINHO, carrinho);
         }
 
-        return (Map<Long, Integer>) carrinho;
+        return carrinho;
     }
 
     public void adicionar(Long produtoId, HttpSession session) {
-        Map<Long, Integer> carrinho = getCarrinho(session);
-        carrinho.put(produtoId,
-                carrinho.getOrDefault(produtoId, 0) + 1);
-    }
 
-    public Map<Long, Integer> listarRaw(HttpSession session) {
-        return getCarrinho(session);
+        Map<Long, Integer> carrinho = listarRaw(session);
+
+        carrinho.put(
+                produtoId,
+                carrinho.getOrDefault(produtoId, 0) + 1
+        );
+
+        session.setAttribute(CARRINHO, carrinho);
     }
 
     public void remover(Long produtoId, HttpSession session) {
-        getCarrinho(session).remove(produtoId);
+
+        Map<Long, Integer> carrinho = listarRaw(session);
+
+        carrinho.remove(produtoId);
+
+        session.setAttribute(CARRINHO, carrinho);
     }
 
     public void limpar(HttpSession session) {
-        session.removeAttribute(CART_KEY);
+
+        session.removeAttribute(CARRINHO);
     }
 }

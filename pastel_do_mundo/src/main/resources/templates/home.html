@@ -58,9 +58,9 @@
         <div class="cart-total">
             Total: R$ <span th:text="${total}">0,00</span>
         </div>
-        <button class="checkout-btn">
-            Finalizar pedido
-        </button>
+<a th:href="@{/checkout}" class="checkout-btn">
+    Finalizar pedido
+</a>
     </div>
 </aside>
 
