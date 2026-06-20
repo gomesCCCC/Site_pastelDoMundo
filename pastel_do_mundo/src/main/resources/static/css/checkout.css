@@ -152,3 +152,19 @@ h2 {
     background-color: #218838;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
+a.categoria {
+    background: #f1f1f1;
+    padding: 8px 14px;
+    border-radius: 18px;
+    font-size: 13px;
+    white-space: nowrap;
+    cursor: pointer;
+    display: inline-block;
+
+    color: #222 !important;
+    text-decoration: none !important;
+}
