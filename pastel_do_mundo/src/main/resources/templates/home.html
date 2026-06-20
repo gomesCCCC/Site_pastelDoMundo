@@ -26,21 +26,36 @@
     <div class="categoria" th:each="c : ${categorias}" th:text="${c}"></div>
 </section>
 
-<main class="produtos">
-    <div class="card" th:each="p : ${produtos}">
-        <img th:src="@{'/imagens/' + ${p.URLimagem}}" alt="produto">
+<main>
 
-        <div class="card-content">
-            <h3 th:text="${p.nome}"></h3>
-            <p th:text="${p.descricao}"></p>
-            <div class="preco" th:text="${'R$ ' + p.preco}"></div>
+    <div th:each="entry : ${produtosPorCategoria}">
 
-            <form th:action="@{/carrinho/adicionar}" method="post">
-                <input type="hidden" name="produtoId" th:value="${p.id}">
-                <button class="btn" type="submit">Adicionar</button>
-            </form>
+        <div style="color:#fff; background:#f0c14b; padding:10px; margin-top:20px; font-weight:600;">
+            <span th:text="${entry.key}"></span>
         </div>
+
+        <main class="produtos">
+            <div class="card" th:each="p : ${entry.value}">
+
+                <img th:src="@{'/imagens/' + ${p.URLimagem}}" alt="produto">
+
+                <div class="card-content">
+                    <h3 th:text="${p.nome}"></h3>
+                    <p th:text="${p.descricao}"></p>
+
+                    <div class="preco" th:text="${'R$ ' + p.preco}"></div>
+
+                    <form th:action="@{/carrinho/adicionar}" method="post">
+                        <input type="hidden" name="produtoId" th:value="${p.id}">
+                        <button class="btn" type="submit">Adicionar</button>
+                    </form>
+                </div>
+
+            </div>
+        </main>
+
     </div>
+
 </main>
 
 <aside class="cart-sidebar">

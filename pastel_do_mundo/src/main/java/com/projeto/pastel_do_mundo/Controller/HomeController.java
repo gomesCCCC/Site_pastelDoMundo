@@ -8,7 +8,6 @@ import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.projeto.pastel_do_mundo.Model.ItemCarrinhoView;
 import com.projeto.pastel_do_mundo.Service.CarrinhoService;
@@ -29,13 +28,17 @@ public class HomeController {
         this.carrinhoService = carrinhoService;
     }
 
-    @GetMapping("/")
+@GetMapping("/")
 public String home(Model model, HttpSession session) {
 
-    model.addAttribute("produtos", produtoService.listarProduto());
+    List<produtoResponseDTO> produtos = produtoService.listarProduto();
 
-    model.addAttribute("categorias",
-            java.util.List.of("Pastéis", "Bebidas", "Combos"));
+    Map<String, List<produtoResponseDTO>> produtosPorCategoria = produtos.stream()
+        .collect(java.util.stream.Collectors.groupingBy(produtoResponseDTO::getCategoria));
+
+    model.addAttribute("produtosPorCategoria", produtosPorCategoria);
+
+    model.addAttribute("categorias", List.of("PASTEL", "DOCE", "BEBIDA"));
 
     Map<Long, Integer> carrinho = carrinhoService.listarRaw(session);
 
@@ -64,22 +67,8 @@ public String home(Model model, HttpSession session) {
     model.addAttribute("carrinho", itens);
     model.addAttribute("total", total);
 
-    int qtdTotal = carrinho.values()
-            .stream()
-            .mapToInt(Integer::intValue)
-            .sum();
-
+    int qtdTotal = carrinho.values().stream().mapToInt(Integer::intValue).sum();
     model.addAttribute("qtdCarrinho", qtdTotal);
-
-    return "home";
-}
-
-@GetMapping("/categoria")
-public String porCategoria(@RequestParam String categoria, Model model) {
-
-    model.addAttribute("produtos",
-        produtoService.listarPorCategoria(categoria)
-    );
 
     return "home";
 }
