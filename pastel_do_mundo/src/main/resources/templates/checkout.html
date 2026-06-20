@@ -3,97 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Finalizar Pedido - Pastel do Mundo</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <title>Finalizar Pedido</title>
+
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+
     <link rel="stylesheet" th:href="@{/css/checkout.css}">
 </head>
+
 <body>
 
 <div class="container">
-    <header>
-        <h1>Pastel do Mundo</h1>
-        <p>Preencha os dados abaixo para confirmar o seu pedido</p>
+
+    <header class="checkout-header">
+        <p class="subtitle">Finalize seu pedido com segurança</p>
     </header>
 
     <form th:action="@{/pedidos/confirmar}" method="post">
-        
+
         <div class="grid-checkout">
-            
-            <div class="secao-checkout">
+
+            <section class="secao-checkout">
+
                 <h2>
-                    <span class="material-symbols-outlined icon-amarelo">map_pin_heart</span>
-                    Dados de Entrega
+                    <span class="material-symbols-outlined icon">map_pin_heart</span>
+                    Entrega
                 </h2>
-                
+
                 <div class="campo-grupo">
-                    <label for="nome">Seu Nome:</label>
-                    <input type="text" id="nome" name="nomeCliente" required placeholder="Ex: João Silva">
+                    <label>Nome</label>
+                    <input type="text" name="nomeCliente" required>
                 </div>
 
                 <div class="campo-grupo">
-                    <label for="telefone">WhatsApp / Telefone:</label>
-                    <input type="tel" id="telefone" name="telefone" required placeholder="Ex: (11) 99999-9999">
+                    <label>Telefone</label>
+                    <input type="tel" name="telefone" required>
                 </div>
 
                 <div class="campo-grupo">
-                    <label for="endereco">Endereço Completo:</label>
-                    <textarea id="endereco" name="endereco" rows="3" required placeholder="Rua, número, bairro e pontos de referência..."></textarea>
+                    <label>Endereço</label>
+                    <textarea name="endereco" rows="3" required></textarea>
                 </div>
-            </div>
 
-            <div>
-                <div class="secao-checkout" style="margin-bottom: 20px;">
+            </section>
+
+            <aside>
+
+                <section class="secao-checkout">
+
                     <h2>
-                        <span class="material-symbols-outlined icon-amarelo">shopping_cart</span>
-                        Resumo do Pedido
+                        <span class="material-symbols-outlined icon">shopping_cart</span>
+                        Resumo
                     </h2>
-                    
-<div th:each="item : ${itens}">
-    <div class="item-resumo">
-        <span th:text="${item.quantidade + 'x ' + item.nome}"></span>
-        <span th:text="'R$ ' + ${item.subtotal}"></span>
-    </div>
-</div>
 
-<div class="total-box">
-   Total: <span th:text="'R$ ' + ${total}"></span>
-</div>
-                </div>
+                    <div class="item-resumo" th:each="item : ${itens}">
+                        <span th:text="${item.quantidade + 'x ' + item.nome}"></span>
+                        <span th:text="'R$ ' + ${item.subtotal}"></span>
+                    </div>
 
-                <div class="secao-checkout">
+                    <div class="total-box">
+                        Total: <span th:text="'R$ ' + ${total}"></span>
+                    </div>
+
+                </section>
+
+                <section class="secao-checkout">
+
                     <h2>
-                        <span class="material-symbols-outlined icon-amarelo">credit_card</span>
-                        Forma de Pagamento
+                        <span class="material-symbols-outlined icon">credit_card</span>
+                        Pagamento
                     </h2>
-                    
-                    <div class="opcoes-pagamento">
-                        <label class="opcao-radio">
+
+                    <div class="payment-group">
+
+                        <label class="payment-option">
                             <input type="radio" name="formaPagamento" value="Pix" checked>
-                            <span>Pix (Chave na próxima tela)</span>
+                            <div>
+                                <span class="title">Pix</span>
+                                <span class="desc">Aprovação imediata</span>
+                            </div>
                         </label>
-                        
-                        <label class="opcao-radio">
+
+                        <label class="payment-option">
                             <input type="radio" name="formaPagamento" value="Cartao">
-                            <span>Cartão de Crédito/Débito (Na entrega)</span>
+                            <div>
+                                <span class="title">Cartão</span>
+                                <span class="desc">Pague na entrega</span>
+                            </div>
                         </label>
-                        
-                        <label class="opcao-radio">
+
+                        <label class="payment-option">
                             <input type="radio" name="formaPagamento" value="Dinheiro">
-                            <span>Dinheiro</span>
+                            <div>
+                                <span class="title">Dinheiro</span>
+                                <span class="desc">Pagamento em espécie</span>
+                            </div>
                         </label>
+
                     </div>
 
-                    <div class="campo-grupo" style="margin-top: 15px;">
-                        <label for="troco">Precisa de troco? Para quanto?</label>
-                        <input type="text" id="troco" name="trocoPara" placeholder="Ex: Troco para R$ 50,00">
-                    </div>
-                </div>
-            </div>
+                </section>
+
+                <button type="submit" class="btn-finalizar">
+                    Confirmar pedido
+                </button>
+
+            </aside>
 
         </div>
 
-        <button type="submit" class="btn-enviar-pedido">Confirmar e Enviar Pedido</button>
     </form>
+
 </div>
 
 </body>
