@@ -59,4 +59,16 @@ public class ClienteService {
         dto.setEmail(cliente.getEmail());
         return dto;
     }
+
+    public Cliente autenticar(String email, String senha) {
+
+    Cliente cliente = clienteRepository.findByEmail(email)
+        .orElse(null);
+
+    if (cliente != null && cliente.getSenha().equals(senha)) {
+        return cliente;
+    }
+
+    return null;
+}
 }

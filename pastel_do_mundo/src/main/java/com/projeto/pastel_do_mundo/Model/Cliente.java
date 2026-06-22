@@ -67,7 +67,4 @@ public class Cliente {
         this.senha = senha;
     }
 
-    
-
-
 }

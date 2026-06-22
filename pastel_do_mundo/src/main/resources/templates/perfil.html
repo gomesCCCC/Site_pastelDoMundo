@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Perfil</title>
+
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+
+    <link rel="stylesheet" th:href="@{/css/perfil.css}">
+</head>
+
+<body>
+
+<div class="perfil-container">
+
+    <header class="perfil-header">
+        <a href="/" class="back">← Voltar</a>
+        <h1>Perfil</h1>
+    </header>
+
+    <section class="perfil-card">
+
+        <div class="avatar">
+            <span class="material-symbols-outlined">person</span>
+        </div>
+
+        <div class="info">
+            <h2>Usuário</h2>
+            <p>cliente@exemplo.com</p>
+        </div>
+
+    </section>
+
+    <section class="perfil-opcoes">
+
+        <a href="#" class="opcao">Meus pedidos</a>
+        <a href="#" class="opcao">Endereços</a>
+        <a href="#" class="opcao">Configurações</a>
+
+    </section>
+
+</div>
+
+</body>
+</html>

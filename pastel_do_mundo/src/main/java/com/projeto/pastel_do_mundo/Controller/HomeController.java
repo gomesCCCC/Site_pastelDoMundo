@@ -73,5 +73,11 @@ public String home(Model model, HttpSession session) {
     return "home";
 }
 
+@GetMapping("/perfil")
+public String perfil() {
+    return "perfil";
+}
+
+
 
 }
