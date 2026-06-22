@@ -1,11 +1,13 @@
 package com.projeto.pastel_do_mundo.dto;
 
-public class clienteResponseDTO {
+public class ClienteResponseDTO {
 
     private Long id;
     private String nome;
     private String email;
-    private String senha;
+    private String endereco;
+    private String telefone;
+    private String cep;
 
     public Long getId() {
         return id;
@@ -31,11 +33,27 @@ public class clienteResponseDTO {
         this.email = email;
     }
 
-    public String getSenha() {
-        return senha;
+    public String getEndereco() {
+        return endereco;
     }
 
-    public void setSenha(String senha) {
-        this.senha = senha;
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
     }
 }

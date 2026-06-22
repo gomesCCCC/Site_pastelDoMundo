@@ -23,16 +23,24 @@ public class Cliente {
     private String nome;
     private String email;
     private String senha;
+    private String endereco;
+    private String telefone;
+    private String CEP;
+
+
 
     public Cliente () {
 
     }
 
-    public Cliente (Long id, String nome, String email, String senha) {
+    public Cliente (Long id, String nome, String email, String senha,String endereco, String telefone, String CEP ) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.senha = senha;
+        this.endereco = endereco;
+        this.telefone = telefone;
+        this.CEP = CEP;
     }
 
     public Long getId() {
@@ -67,4 +75,29 @@ public class Cliente {
         this.senha = senha;
     }
 
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+
+    public String getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone = telefone;
+    }
+
+    public String getCEP() {
+        return CEP;
+    }
+
+    public void setCEP(String cEP) {
+        CEP = cEP;
+    }
+
+    
 }

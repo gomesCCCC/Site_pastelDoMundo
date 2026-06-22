@@ -26,17 +26,56 @@
         </div>
 
         <div class="info">
-            <h2>Usuário</h2>
-            <p>cliente@exemplo.com</p>
+
+            <h2 th:text="${cliente.nome}">
+                Usuário
+            </h2>
+
+            <p>
+                <strong>Email:</strong>
+                <span th:text="${cliente.email}">
+                    cliente@exemplo.com
+                </span>
+            </p>
+
+            <p>
+                <strong>Telefone:</strong>
+                <span th:text="${cliente.telefone}">
+                    Não informado
+                </span>
+            </p>
+
+            <p>
+                <strong>Endereço:</strong>
+                <span th:text="${cliente.endereco}">
+                    Não informado
+                </span>
+            </p>
+
+            <p>
+                <strong>CEP:</strong>
+                <span th:text="${cliente.CEP}">
+                    Não informado
+                </span>
+            </p>
+
         </div>
 
     </section>
 
     <section class="perfil-opcoes">
 
-        <a href="#" class="opcao">Meus pedidos</a>
-        <a href="#" class="opcao">Endereços</a>
-        <a href="#" class="opcao">Configurações</a>
+        <a href="#" class="opcao">
+            Meus pedidos
+        </a>
+
+        <a href="#" class="opcao">
+            Endereços
+        </a>
+
+        <a href="#" class="opcao">
+            Configurações
+        </a>
 
     </section>
 

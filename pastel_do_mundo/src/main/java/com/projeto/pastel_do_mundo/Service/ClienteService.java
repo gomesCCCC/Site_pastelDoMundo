@@ -3,57 +3,63 @@ package com.projeto.pastel_do_mundo.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.projeto.pastel_do_mundo.Model.Cliente;
 import com.projeto.pastel_do_mundo.Repository.ClienteRepository;
-import com.projeto.pastel_do_mundo.dto.clienteRequestDTO;
-import com.projeto.pastel_do_mundo.dto.clienteResponseDTO;
-
+import com.projeto.pastel_do_mundo.dto.ClienteRequestDTO;
+import com.projeto.pastel_do_mundo.dto.ClienteResponseDTO;
 
 @Service
 public class ClienteService {
 
-
     private final ClienteRepository clienteRepository;
+    private final BCryptPasswordEncoder encoder;
 
     public ClienteService(ClienteRepository clienteRepository) {
         this.clienteRepository = clienteRepository;
+        this.encoder = new BCryptPasswordEncoder();
     }
 
-    
-    public List<clienteResponseDTO> listarCliente() {
+    public List<ClienteResponseDTO> listarCliente() {
         return clienteRepository.findAll()
-        .stream()
-        .map(this::toResponseDTO)
-        .collect(Collectors.toList());
+                .stream()
+                .map(this::toResponseDTO)
+                .collect(Collectors.toList());
     }
-    public clienteResponseDTO cadastrarCliente(clienteRequestDTO dto) {
-        Cliente cliente = new Cliente();
 
-        cliente.setNome(dto.getNome());
-        cliente.setEmail(dto.getEmail());
-        cliente.setSenha(dto.getSenha());
+    public Cliente cadastrarCliente(ClienteRequestDTO dto) {
 
-        Cliente salvo = clienteRepository.save(cliente);
+    Cliente cliente = new Cliente();
 
-        return toResponseDTO(salvo);
-    }
-    
+    cliente.setNome(dto.getNome());
+    cliente.setEmail(dto.getEmail());
+
+    cliente.setSenha(
+            encoder.encode(dto.getSenha())
+    );
+
+    cliente.setEndereco(dto.getEndereco());
+    cliente.setTelefone(dto.getTelefone());
+    cliente.setCEP(dto.getCep());
+
+    return clienteRepository.save(cliente);
+}
 
     public void apagarCliente(Long id) {
         clienteRepository.deleteById(id);
     }
 
-    public clienteResponseDTO buscarClienteId(Long id) {
+    public ClienteResponseDTO buscarClienteId(Long id) {
         Cliente cliente = clienteRepository.findById(id)
-        .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
         return toResponseDTO(cliente);
     }
 
-    private clienteResponseDTO toResponseDTO(Cliente cliente) {
-        clienteResponseDTO dto = new clienteResponseDTO();
+    private ClienteResponseDTO toResponseDTO(Cliente cliente) {
+        ClienteResponseDTO dto = new ClienteResponseDTO();
         dto.setId(cliente.getId());
         dto.setNome(cliente.getNome());
         dto.setEmail(cliente.getEmail());
@@ -62,13 +68,13 @@ public class ClienteService {
 
     public Cliente autenticar(String email, String senha) {
 
-    Cliente cliente = clienteRepository.findByEmail(email)
-        .orElse(null);
+        Cliente cliente = clienteRepository.findByEmail(email)
+                .orElse(null);
 
-    if (cliente != null && cliente.getSenha().equals(senha)) {
-        return cliente;
+        if (cliente != null && encoder.matches(senha, cliente.getSenha())) {
+            return cliente;
+        }
+
+        return null;
     }
-
-    return null;
-}
 }
