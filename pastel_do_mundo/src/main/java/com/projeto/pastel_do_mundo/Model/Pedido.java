@@ -31,22 +31,27 @@ public class Pedido {
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
     private List<ItemPedido> itens = new ArrayList<>();
 
-    private String nome;
-
     @Enumerated(EnumType.STRING)
     private StatusPedido status;
 
     private BigDecimal total;
 
+    private String nomeCliente;
+    private String telefoneCliente;
+    private String enderecoEntrega;
+    private String cepEntrega;
     public Pedido() {
 
     }
 
-    public Pedido(Long id,String nome,StatusPedido status,BigDecimal total) {
+    public Pedido(Long id,String nome,StatusPedido status,BigDecimal total,String nomeCliente,String telefoneCliente, String enderecoEntrega,String cepEntrega) {
         this.id = id;
-        this.nome = nome;
         this.status = status;
         this.total = total;
+        this.nomeCliente = nomeCliente;
+        this.telefoneCliente = telefoneCliente;
+        this.enderecoEntrega = enderecoEntrega;
+        this.cepEntrega = cepEntrega;
     }
 
     public long getId() {
@@ -55,14 +60,6 @@ public class Pedido {
 
     public void setId(long id) {
         this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
     }
 
     public StatusPedido getStatus() {
@@ -95,6 +92,38 @@ public class Pedido {
 
     public void setItens(List<ItemPedido> itens) {
     this.itens = itens;
+    }
+
+    public String getNomeCliente() {
+        return nomeCliente;
+    }
+
+    public void setNomeCliente(String nomeCliente) {
+        this.nomeCliente = nomeCliente;
+    }
+
+    public String getTelefoneCliente() {
+        return telefoneCliente;
+    }
+
+    public void setTelefoneCliente(String telefoneCliente) {
+        this.telefoneCliente = telefoneCliente;
+    }
+
+    public String getEnderecoEntrega() {
+        return enderecoEntrega;
+    }
+
+    public void setEnderecoEntrega(String enderecoEntrega) {
+        this.enderecoEntrega = enderecoEntrega;
+    }
+
+    public String getCepEntrega() {
+        return cepEntrega;
+    }
+
+    public void setCepEntrega(String cepEntrega) {
+        this.cepEntrega = cepEntrega;
     }
 
 

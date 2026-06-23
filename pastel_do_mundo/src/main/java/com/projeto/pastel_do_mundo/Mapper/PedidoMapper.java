@@ -15,25 +15,28 @@ public class PedidoMapper {
 
         public pedidoResponseDTO toResponseDTO(Pedido pedido) {
 
-        pedidoResponseDTO dto = new pedidoResponseDTO();
+    pedidoResponseDTO dto = new pedidoResponseDTO();
 
-        dto.setId(pedido.getId());
-        dto.setNomePedido(pedido.getNome());
-        dto.setStatus(pedido.getStatus());
-        dto.setTotal(pedido.getTotal());
+    dto.setId(pedido.getId());
+    dto.setStatus(pedido.getStatus());
+    dto.setTotal(pedido.getTotal());
+    dto.setClienteId(pedido.getCliente().getId());
+    dto.setNomeCliente(pedido.getCliente().getNome());
+    dto.setTelefoneCliente(pedido.getTelefoneCliente());
+    dto.setEnderecoEntrega(pedido.getEnderecoEntrega());
+    dto.setCepEntrega(pedido.getCepEntrega());
 
-        dto.setClienteId(pedido.getCliente().getId());
-        dto.setNomeCliente(pedido.getCliente().getNome());
 
-        List<ItemPedidoResponseDTO> itens = pedido.getItens()
-            .stream()
-            .map(this::toItemDTO)
-            .toList();
 
-        dto.setItens(itens);
+    List<ItemPedidoResponseDTO> itens = pedido.getItens()
+        .stream()
+        .map(this::toItemDTO)
+        .toList();
 
-        return dto;
-    }
+    dto.setItens(itens);
+
+    return dto;
+}
 
     private ItemPedidoResponseDTO toItemDTO(ItemPedido item) {
 

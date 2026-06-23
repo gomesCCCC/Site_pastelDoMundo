@@ -28,33 +28,26 @@ public class PedidoController {
     public PedidoController(PedidoService pedidoService) {
         this.pedidoService = pedidoService;
     }
-    
+
     @GetMapping
-    public List<pedidoResponseDTO> MostrarPedidos() {
+    public List<pedidoResponseDTO> listar() {
         return pedidoService.listarPedido();
     }
 
     @GetMapping("/{id}")
-    public pedidoResponseDTO localizarPedido(@PathVariable Long id) {
+    public pedidoResponseDTO buscar(@PathVariable Long id) {
         return pedidoService.acharPorIdPedido(id);
     }
 
-
-
-    @PostMapping
-    public pedidoResponseDTO cadastrarPedido(@Valid @RequestBody pedidoRequestDTO dto) {
-        return pedidoService.fazerPedido(dto);
+    @PatchMapping("/{id}/status")
+    public pedidoResponseDTO atualizarStatus(
+            @PathVariable Long id,
+            @RequestParam StatusPedido status) {
+        return pedidoService.atualizarStatus(id, status);
     }
 
     @DeleteMapping("/{id}")
-    public void excluirPedido(@PathVariable Long id) {
+    public void deletar(@PathVariable Long id) {
         pedidoService.deletarPedidoPorID(id);
     }
-
-    @PatchMapping("/{id}/status")
-public pedidoResponseDTO atualizarStatus(
-        @PathVariable Long id,
-        @RequestParam StatusPedido status) {
-    return pedidoService.atualizarStatus(id, status);
-}
 }

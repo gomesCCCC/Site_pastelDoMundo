@@ -18,112 +18,72 @@ import com.projeto.pastel_do_mundo.Repository.PedidoRepository;
 import com.projeto.pastel_do_mundo.Repository.ProdutoRepository;
 import com.projeto.pastel_do_mundo.dto.CheckoutRequestDTO;
 import com.projeto.pastel_do_mundo.dto.ItemCheckoutDTO;
-import com.projeto.pastel_do_mundo.dto.pedidoRequestDTO;
 import com.projeto.pastel_do_mundo.dto.pedidoResponseDTO;
 
 import jakarta.transaction.Transactional;
 
 @Service
-
 public class PedidoService {
 
+    private final ClienteRepository clienteRepository;
     private final ProdutoRepository produtoRepository;
     private final PedidoRepository pedidoRepository;
-    private final ClienteRepository clienteRepository;
     private final PedidoMapper pedidoMapper;
 
     public PedidoService(PedidoRepository pedidoRepository,
                          ClienteRepository clienteRepository,
                          ProdutoRepository produtoRepository,
                          PedidoMapper pedidoMapper) {
+
         this.pedidoRepository = pedidoRepository;
         this.clienteRepository = clienteRepository;
         this.produtoRepository = produtoRepository;
         this.pedidoMapper = pedidoMapper;
     }
 
-    public List<pedidoResponseDTO> listarPedido() {
-        return pedidoRepository.findAll()
-        .stream()
-        .map(pedidoMapper::toResponseDTO)
-        .collect(Collectors.toList());
-    }
-
-public pedidoResponseDTO fazerPedido(pedidoRequestDTO dto) {
-
-    Cliente cliente = clienteRepository.findById(dto.getClienteId())
-            .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
-
-    Pedido pedido = new Pedido();
-
-    pedido.setCliente(cliente);
-    pedido.setStatus(StatusPedido.ABERTO);
-    pedido.setTotal(BigDecimal.ZERO);
-
-Pedido salvo = pedidoRepository.save(pedido);
-
-return toResponseDTO(salvo);
-}
-
-    public pedidoResponseDTO acharPorIdPedido(Long id) {
-        Pedido pedido =  pedidoRepository.findById(id).orElseThrow(() -> new RuntimeException("pedido não localizado"));
-
-        return toResponseDTO(pedido);
-    }
-
-    public void deletarPedidoPorID(Long id) {
-        pedidoRepository.deleteById(id);
-    }
-
-    private pedidoResponseDTO toResponseDTO(Pedido pedido) {
-    pedidoResponseDTO dto = new pedidoResponseDTO();
-
-    dto.setId(pedido.getId());
-    dto.setNomePedido(pedido.getNome());
-    dto.setStatus(pedido.getStatus());
-    dto.setTotal(pedido.getTotal());
-    dto.setClienteId(pedido.getCliente().getId());
-    dto.setNomeCliente(pedido.getCliente().getNome());
-    return dto;
-    }
-        
-        @Transactional
-        public pedidoResponseDTO checkout(CheckoutRequestDTO dto) {
+    @Transactional
+    public pedidoResponseDTO checkout(CheckoutRequestDTO dto) {
 
         Cliente cliente = clienteRepository.findById(dto.getClienteId())
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
         Pedido pedido = new Pedido();
-        pedido.setCliente(cliente);
-        pedido.setStatus(StatusPedido.ABERTO);
-        BigDecimal total = BigDecimal.ZERO;
 
+        pedido.setCliente(cliente);
+        pedido.setNomeCliente(cliente.getNome());
+        pedido.setTelefoneCliente(cliente.getTelefone());
+        pedido.setEnderecoEntrega(cliente.getEndereco());
+        pedido.setCepEntrega(cliente.getCEP());
+
+        pedido.setStatus(StatusPedido.ABERTO);
+
+        BigDecimal total = BigDecimal.ZERO;
         List<ItemPedido> itens = new ArrayList<>();
 
-    for (ItemCheckoutDTO itemDTO : dto.getItens()) {
-    System.out.println("produtoId recebido: " + itemDTO.getProdutoId());
-    Produto produto = produtoRepository.findById(itemDTO.getProdutoId())
-            .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+        for (ItemCheckoutDTO itemDTO : dto.getItens()) {
 
-    if (produto.getQuantidade() < itemDTO.getQuantidade()) {
-        throw new RuntimeException("Estoque insuficiente");
-    }
+            Produto produto = produtoRepository.findById(itemDTO.getProdutoId())
+                    .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
-    produto.setQuantidade(produto.getQuantidade() - itemDTO.getQuantidade());
-    produtoRepository.save(produto);
+            if (produto.getQuantidade() < itemDTO.getQuantidade()) {
+                throw new RuntimeException("Estoque insuficiente");
+            }
 
-    BigDecimal subtotal = produto.getPreco()
-        .multiply(BigDecimal.valueOf(itemDTO.getQuantidade()));
+            produto.setQuantidade(produto.getQuantidade() - itemDTO.getQuantidade());
+            produtoRepository.save(produto);
 
-    total = total.add(subtotal);
+            BigDecimal subtotal =
+                    produto.getPreco().multiply(BigDecimal.valueOf(itemDTO.getQuantidade()));
 
-    ItemPedido item = new ItemPedido();
-    item.setPedido(pedido);
-    item.setProduto(produto);
-    item.setQuantidade(itemDTO.getQuantidade());
-    item.setPrecoUni(produto.getPreco());
+            total = total.add(subtotal);
 
-    itens.add(item);
+            ItemPedido item = new ItemPedido();
+            item.setPedido(pedido);
+            item.setProduto(produto);
+            item.setQuantidade(itemDTO.getQuantidade());
+            item.setPrecoUni(produto.getPreco());
+
+            itens.add(item);
         }
 
         pedido.setItens(itens);
@@ -134,14 +94,39 @@ return toResponseDTO(salvo);
         return pedidoMapper.toResponseDTO(salvo);
     }
 
+    public List<pedidoResponseDTO> listarPedido() {
+
+        return pedidoRepository.findAll()
+                .stream()
+                .map(pedidoMapper::toResponseDTO)
+                .collect(Collectors.toList());
+    }
+public pedidoResponseDTO acharPorIdPedido(Long id) {
+
+        Pedido pedido = pedidoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+
+        return pedidoMapper.toResponseDTO(pedido);
+    }
+
     public pedidoResponseDTO atualizarStatus(Long id, StatusPedido status) {
-    Pedido pedido = pedidoRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
 
-    pedido.setStatus(status);
+        Pedido pedido = pedidoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
 
-    return pedidoMapper.toResponseDTO(pedidoRepository.save(pedido));
-}
+        pedido.setStatus(status);
 
+        Pedido atualizado = pedidoRepository.save(pedido);
 
+        return pedidoMapper.toResponseDTO(atualizado);
+    }
+
+    public void deletarPedidoPorID(Long id) {
+
+        if (!pedidoRepository.existsById(id)) {
+            throw new RuntimeException("Pedido não encontrado");
+        }
+
+        pedidoRepository.deleteById(id);
+    }
 }

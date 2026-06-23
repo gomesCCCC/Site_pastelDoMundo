@@ -8,26 +8,23 @@ import com.projeto.pastel_do_mundo.Model.StatusPedido;
 public class pedidoResponseDTO {
 
     private Long id;
-    private String nomePedido;
     private Long clienteId;
     private String nomeCliente;
-    private String nome;
+    private String telefoneCliente;
+    private String enderecoEntrega;
+    private String cepEntrega;
     private StatusPedido status;
     private BigDecimal total;
     private List<ItemPedidoResponseDTO> itens;
     
+
     public Long getId() {
         return id;
     }
     public void setId(Long id) {
         this.id = id;
     }
-    public String getNome() {
-        return nome;
-    }
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+    
     public StatusPedido getStatus() {
         return status;
     }
@@ -39,12 +36,6 @@ public class pedidoResponseDTO {
     }
     public void setTotal(BigDecimal total) {
         this.total = total;
-    }
-    public String getNomePedido() {
-        return nomePedido;
-    }
-    public void setNomePedido(String nomePedido) {
-        this.nomePedido = nomePedido;
     }
     public String getNomeCliente() {
         return nomeCliente;
@@ -67,5 +58,27 @@ public class pedidoResponseDTO {
         this.itens = itens;
     }
 
-    
+    public String getTelefoneCliente() {
+        return telefoneCliente;
+    }
+
+    public void setTelefoneCliente(String telefoneCliente) {
+        this.telefoneCliente = telefoneCliente;
+    }
+
+    public String getEnderecoEntrega() {
+        return enderecoEntrega;
+    }
+
+    public void setEnderecoEntrega(String enderecoEntrega) {
+        this.enderecoEntrega = enderecoEntrega;
+    }
+
+    public String getCepEntrega() {
+        return cepEntrega;
+    }
+
+    public void setCepEntrega(String cepEntrega) {
+        this.cepEntrega = cepEntrega;
+    }    
 }
