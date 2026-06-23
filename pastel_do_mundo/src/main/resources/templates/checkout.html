@@ -30,19 +30,64 @@
                     Entrega
                 </h2>
 
-                <div class="campo-grupo">
-                    <label>Nome</label>
-                    <input type="text" name="nomeCliente" required>
+                <div th:if="${session.usuario != null}">
+
+                    <div class="campo-grupo">
+                        <label>Nome</label>
+                        <input type="text"
+                               name="nomeCliente"
+                               th:value="${session.usuario.nome}"
+                               readonly>
+                    </div>
+
+                    <div class="campo-grupo">
+                        <label>Telefone</label>
+                        <input type="tel"
+                               name="telefone"
+                               th:value="${session.usuario.telefone}"
+                               required>
+                    </div>
+
+                    <div class="campo-grupo">
+                        <label>Endereço</label>
+                        <textarea name="endereco"
+                                  rows="3"
+                                  required
+                                  th:text="${session.usuario.endereco}">
+                        </textarea>
+                    </div>
+
+                    <div class="campo-grupo">
+                        <label>CEP</label>
+                        <input type="text"
+                               name="cep"
+                               th:value="${session.usuario.CEP}">
+                    </div>
+
                 </div>
 
-                <div class="campo-grupo">
-                    <label>Telefone</label>
-                    <input type="tel" name="telefone" required>
-                </div>
+                <div th:if="${session.usuario == null}">
 
-                <div class="campo-grupo">
-                    <label>Endereço</label>
-                    <textarea name="endereco" rows="3" required></textarea>
+                    <div class="campo-grupo">
+                        <label>Nome</label>
+                        <input type="text" name="nomeCliente" required>
+                    </div>
+
+                    <div class="campo-grupo">
+                        <label>Telefone</label>
+                        <input type="tel" name="telefone" required>
+                    </div>
+
+                    <div class="campo-grupo">
+                        <label>Endereço</label>
+                        <textarea name="endereco" rows="3" required></textarea>
+                    </div>
+
+                    <div class="campo-grupo">
+                        <label>CEP</label>
+                        <input type="text" name="cep">
+                    </div>
+
                 </div>
 
             </section>

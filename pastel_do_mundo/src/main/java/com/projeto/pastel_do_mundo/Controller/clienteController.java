@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.projeto.pastel_do_mundo.Model.Cliente;
+import com.projeto.pastel_do_mundo.Repository.ClienteRepository;
 import com.projeto.pastel_do_mundo.Service.ClienteService;
 import com.projeto.pastel_do_mundo.dto.ClienteRequestDTO;
 import com.projeto.pastel_do_mundo.dto.ClienteResponseDTO;
@@ -21,9 +22,11 @@ import jakarta.validation.Valid;
 public class clienteController {
 
     private final ClienteService clienteService;
+     private final ClienteRepository clienteRepository;
 
-    public clienteController(ClienteService clienteService) {
+    public clienteController(ClienteService clienteService,ClienteRepository clienteRepository) {
         this.clienteService = clienteService;
+        this.clienteRepository = clienteRepository;
     }
 
     @GetMapping
@@ -39,7 +42,7 @@ public class clienteController {
    @PostMapping
 public Cliente salvar(@Valid @RequestBody ClienteRequestDTO dto) {
     return clienteService.cadastrarCliente(dto);
-
-
 }
+
+
 }

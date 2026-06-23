@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.projeto.pastel_do_mundo.Model.Cliente;
 import com.projeto.pastel_do_mundo.Model.ItemCarrinhoView;
 import com.projeto.pastel_do_mundo.Model.Produto;
 import com.projeto.pastel_do_mundo.Service.CarrinhoService;
@@ -30,35 +31,43 @@ public class CheckoutController {
 @GetMapping("/checkout")
 public String checkout(Model model, HttpSession session) {
 
-       Map<Long, Integer> carrinho = carrinhoService.listarRaw(session);
+    Cliente cliente = (Cliente) session.getAttribute("usuario");
 
-List<ItemCarrinhoView> itens = new ArrayList<>();
-BigDecimal total = BigDecimal.ZERO;
+    if (cliente == null) {
+        return "redirect:/login";
+    }
 
-for (Map.Entry<Long, Integer> entry : carrinho.entrySet()) {
+    model.addAttribute("cliente", cliente);
 
-    Produto produto = produtoService.buscarEntityPorId(entry.getKey());
-    int qtd = entry.getValue();
+    Map<Long, Integer> carrinho = carrinhoService.listarRaw(session);
 
-    BigDecimal subtotal = produto.getPreco()
-            .multiply(BigDecimal.valueOf(qtd));
+    List<ItemCarrinhoView> itens = new ArrayList<>();
+    BigDecimal total = BigDecimal.ZERO;
 
-    ItemCarrinhoView item = new ItemCarrinhoView(
-            produto.getId(),
-            produto.getNome(),
-            produto.getPreco(),
-            qtd,
-            subtotal
-    );
+    for (Map.Entry<Long, Integer> entry : carrinho.entrySet()) {
 
-    itens.add(item);
-    total = total.add(subtotal);
-}
+        Produto produto = produtoService.buscarEntityPorId(entry.getKey());
+        int qtd = entry.getValue();
 
-model.addAttribute("itens", itens);
-model.addAttribute("total", total);
-model.addAttribute("qtdCarrinho", carrinho.values().stream().mapToInt(Integer::intValue).sum());
+        BigDecimal subtotal = produto.getPreco()
+                .multiply(BigDecimal.valueOf(qtd));
 
-return "checkout";
+        itens.add(new ItemCarrinhoView(
+                produto.getId(),
+                produto.getNome(),
+                produto.getPreco(),
+                qtd,
+                subtotal
+        ));
+
+        total = total.add(subtotal);
+    }
+
+    model.addAttribute("itens", itens);
+    model.addAttribute("total", total);
+    model.addAttribute("qtdCarrinho",
+            carrinho.values().stream().mapToInt(Integer::intValue).sum());
+
+    return "checkout";
 }
 }

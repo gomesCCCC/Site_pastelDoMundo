@@ -5,14 +5,19 @@
     <title>Cardápio</title>
 
     <link rel="stylesheet"
-href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
-    <link rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+          rel="stylesheet">
 
     <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
 <header class="topbar">
 
     <div class="brand">
@@ -24,22 +29,20 @@ href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
         <div class="profile-container">
 
             <div class="profile-btn">
-                <span class="material-symbols-outlined">
-                    person
-                </span>
+                <span class="material-symbols-outlined">person</span>
             </div>
 
             <div class="profile-dropdown">
 
                 <div th:if="${session.usuario == null}">
-    <a href="/login">Entrar</a>
-    <a href="/cadastro">Criar conta</a>
-</div>
+                    <a href="/login">Entrar</a>
+                    <a href="/cadastro">Criar conta</a>
+                </div>
 
-<div th:if="${session.usuario != null}">
-    <a href="/perfil">Perfil</a>
-    <a href="/logout">Sair</a>
-</div>
+                <div th:if="${session.usuario != null}">
+                    <a href="/perfil">Perfil</a>
+                    <a href="/logout">Sair</a>
+                </div>
 
             </div>
 
@@ -54,29 +57,34 @@ href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 </section>
 
 <section class="categorias">
+
     <a class="categoria"
-   th:each="c : ${categorias}"
-   th:href="'#' + ${c}"
-   th:text="${c}">
-   </a>
+       th:each="c : ${categorias}"
+       th:href="'#' + ${c}"
+       th:text="${c}">
+    </a>
+
 </section>
 
 <main>
 
-<div th:each="entry : ${produtosPorCategoria}">
+    <div th:each="entry : ${produtosPorCategoria}">
 
-    <div th:attr="id=${entry.key}"
-         style="color:#fff; background:#f0c14b; padding:10px; margin-top:20px; font-weight:600;">
-         <span th:text="${entry.key}"></span>
-    </div>
+        <div th:attr="id=${entry.key}"
+             style="color:#fff; background:#f0c14b; padding:10px; margin-top:20px; font-weight:600;">
+            <span th:text="${entry.key}"></span>
+        </div>
 
-        <main class="produtos">
+        <div class="produtos">
+
             <div class="card" th:each="p : ${entry.value}">
 
                 <img th:src="@{'/imagens/' + ${p.URLimagem}}" alt="produto">
 
                 <div class="card-content">
+
                     <h3 th:text="${p.nome}"></h3>
+
                     <p th:text="${p.descricao}"></p>
 
                     <div class="preco" th:text="${'R$ ' + p.preco}"></div>
@@ -85,16 +93,19 @@ href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
                         <input type="hidden" name="produtoId" th:value="${p.id}">
                         <button class="btn" type="submit">Adicionar</button>
                     </form>
+
                 </div>
 
             </div>
-        </main>
+
+        </div>
 
     </div>
 
 </main>
 
 <aside class="cart-sidebar">
+
     <div class="cart-header">
         <h3>Seu pedido</h3>
         <span th:text="${qtdCarrinho} + ' itens'">0 itens</span>
@@ -102,28 +113,32 @@ href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
 
     <div class="cart-item" th:each="item : ${carrinho}">
 
-    <span th:text="${item.nome}"></span>
+        <span th:text="${item.nome}"></span>
 
-    <span th:text="${item.quantidade}"></span>
+        <span th:text="${item.quantidade}"></span>
 
-    <form th:action="@{/carrinho/remover}" method="post" style="display:inline;">
-        <input type="hidden" name="produtoId" th:value="${item.produtoId}">
+        <form th:action="@{/carrinho/remover}" method="post" style="display:inline;">
+            <input type="hidden" name="produtoId" th:value="${item.produtoId}">
 
-        <button type="submit" style="background:none; border:none; cursor:pointer;">
-            <span class="material-symbols-outlined">delete</span>
-        </button>
-    </form>
+            <button type="submit" style="background:none; border:none; cursor:pointer;">
+                <span class="material-symbols-outlined">delete</span>
+            </button>
+        </form>
 
-</div>
+    </div>
 
     <div class="cart-footer">
+
         <div class="cart-total">
             Total: R$ <span th:text="${total}">0,00</span>
         </div>
-<a th:href="@{/checkout}" class="checkout-btn">
-    Finalizar pedido
-</a>
+
+        <a th:href="@{/checkout}" class="checkout-btn">
+            Finalizar pedido
+        </a>
+
     </div>
+
 </aside>
 
 <div class="cart-tab">

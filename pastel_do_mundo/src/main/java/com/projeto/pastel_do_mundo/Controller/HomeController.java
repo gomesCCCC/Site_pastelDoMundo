@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.projeto.pastel_do_mundo.Model.Cliente;
 import com.projeto.pastel_do_mundo.Model.ItemCarrinhoView;
 import com.projeto.pastel_do_mundo.Service.CarrinhoService;
 import com.projeto.pastel_do_mundo.Service.ProdutoService;
@@ -73,21 +72,4 @@ public String home(Model model, HttpSession session) {
 
     return "home";
 }
-
-@GetMapping("/perfil")
-public String perfil(HttpSession session, Model model) {
-
-    Cliente cliente = (Cliente) session.getAttribute("usuario");
-
-    if (cliente == null) {
-        return "redirect:/auth/login";
-    }
-
-    model.addAttribute("cliente", cliente);
-
-    return "perfil";
-}
-
-
-
 }
