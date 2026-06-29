@@ -254,11 +254,19 @@ a.categoria {
     position: relative;
 }
 
+
+
 .profile-container {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     position: relative;
+}
+
+.profile-btn-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
 }
 
 .profile-btn {
@@ -271,6 +279,13 @@ a.categoria {
     background: #f1f1f1;
     text-decoration: none;
     color: #222;
+}
+
+.profile-btn-wrapper:hover .profile-dropdown {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition-delay: 0s, 0s;
 }
 
 .profile-hover {
@@ -302,32 +317,26 @@ a.categoria {
     color: #444;
 }
 
-.profile-container {
-    position: relative;
-}
-
 .profile-dropdown {
     position: absolute;
-    top: 38px; 
+    top: 45px;
     right: 0;
 
     min-width: 150px;
-    background: white;
+    background: #fff;
     border-radius: 12px;
     box-shadow: 0 4px 16px rgba(0,0,0,.1);
 
-    overflow: hidden;
-
     opacity: 0;
+    visibility: hidden;
     pointer-events: none;
 
-    transition: .2s;
+    transition: opacity .2s ease, visibility .2s ease;
+    transition-delay: .3s, .3s;
+    z-index: 1000;
 }
 
-.profile-container:hover .profile-dropdown {
-    opacity: 1;
-    pointer-events: auto;
-}
+
 
 .profile-dropdown a {
     display: block;
@@ -344,4 +353,113 @@ a.categoria {
 
 .profile-dropdown a:hover {
     background: #f5f5f5;
+}
+
+.material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 28px;
+    line-height: 1;
+    display: inline-block;
+}
+
+.orders-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.orders-btn {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #f1f1f1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #222;
+    text-decoration: none;
+    cursor: pointer;
+    pointer-events: none;
+    margin-right: 12px;
+}
+
+.orders-btn .material-symbols-outlined {
+    font-size: 22px;
+}
+
+.orders-btn:hover {
+    background: #e6e6e6;
+}
+
+.orders-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.orders-dropdown {
+    position: absolute;
+    top: 45px;
+    right: 0;
+
+    min-width: 200px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,.1);
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transition: opacity .2s ease, visibility .2s ease;
+    transition-delay: .3s, .3s;
+    z-index: 1000;
+}
+
+.orders-title {
+    padding: 12px 16px;
+    font-weight: 600;
+    border-bottom: 1px solid #eee;
+}
+
+.orders-item {
+    padding: 10px 16px;
+    font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.orders-item:hover {
+    background: #f5f5f5;
+}
+
+.orders-empty {
+    padding: 12px 16px;
+    display: block;
+    font-size: 12px;
+    color: #777;
+}
+
+.orders-wrapper:hover .orders-dropdown {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition-delay: 0s, 0s;
+}
+
+.orders-wrapper,
+.profile-wrapper {
+    position: relative;
+}
+
+
+
+.topbar {
+    position: relative;
+    z-index: 2000;
 }

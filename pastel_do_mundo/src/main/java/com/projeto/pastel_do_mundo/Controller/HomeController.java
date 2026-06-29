@@ -9,7 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import com.projeto.pastel_do_mundo.Model.Cliente;
 import com.projeto.pastel_do_mundo.Model.ItemCarrinhoView;
+import com.projeto.pastel_do_mundo.Model.Pedido;
+import com.projeto.pastel_do_mundo.Repository.PedidoRepository;
 import com.projeto.pastel_do_mundo.Service.CarrinhoService;
 import com.projeto.pastel_do_mundo.Service.ProdutoService;
 import com.projeto.pastel_do_mundo.dto.produtoResponseDTO;
@@ -18,14 +21,17 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class HomeController {
-
+    
+    private final PedidoRepository pedidoRepository;
     private final ProdutoService produtoService;
     private final CarrinhoService carrinhoService;
 
     public HomeController(ProdutoService produtoService,
-                          CarrinhoService carrinhoService) {
+                          CarrinhoService carrinhoService,
+                        PedidoRepository pedidoRepository) {
         this.produtoService = produtoService;
         this.carrinhoService = carrinhoService;
+        this.pedidoRepository = pedidoRepository;
     }
 
 @GetMapping("/")
@@ -69,6 +75,13 @@ public String home(Model model, HttpSession session) {
 
     int qtdTotal = carrinho.values().stream().mapToInt(Integer::intValue).sum();
     model.addAttribute("qtdCarrinho", qtdTotal);
+
+ Cliente cliente = (Cliente) session.getAttribute("usuario");
+
+if (cliente != null) {
+    List<Pedido> pedidos = pedidoRepository.findByClienteId(cliente.getId());
+    model.addAttribute("pedidos", pedidos);
+}
 
     return "home";
 }
