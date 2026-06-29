@@ -16,7 +16,7 @@
 <div class="container">
 
     <header class="checkout-header">
-        <p class="subtitle">Finalize seu pedido com segurança</p>
+        <p class="subtitle">Finalize seu pedido</p>
     </header>
 
     <form th:action="@{/pedidos/confirmar}" method="post">
@@ -115,37 +115,13 @@
                 <section class="secao-checkout">
 
                     <h2>
-                        <span class="material-symbols-outlined icon">credit_card</span>
+                        <span class="material-symbols-outlined icon">payments</span>
                         Pagamento
                     </h2>
 
-                    <div class="payment-group">
-
-                        <label class="payment-option">
-                            <input type="radio" name="formaPagamento" value="Pix" checked>
-                            <div>
-                                <span class="title">Pix</span>
-                                <span class="desc">Aprovação imediata</span>
-                            </div>
-                        </label>
-
-                        <label class="payment-option">
-                            <input type="radio" name="formaPagamento" value="Cartao">
-                            <div>
-                                <span class="title">Cartão</span>
-                                <span class="desc">Pague na entrega</span>
-                            </div>
-                        </label>
-
-                        <label class="payment-option">
-                            <input type="radio" name="formaPagamento" value="Dinheiro">
-                            <div>
-                                <span class="title">Dinheiro</span>
-                                <span class="desc">Pagamento em espécie</span>
-                            </div>
-                        </label>
-
-                    </div>
+                    <p style="margin-top:10px;">
+                        O pagamento será processado automaticamente após a confirmação do pedido.
+                    </p>
 
                 </section>
 

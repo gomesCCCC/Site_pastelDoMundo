@@ -5,5 +5,4 @@ public enum StatusPedido {
     PROCESSANDO,
     FINALIZADO,
     CANCELADO
-
 }
