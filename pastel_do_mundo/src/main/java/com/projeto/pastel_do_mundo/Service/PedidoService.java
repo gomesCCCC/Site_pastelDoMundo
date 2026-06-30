@@ -132,14 +132,20 @@ public pedidoResponseDTO acharPorIdPedido(Long id) {
         return pedidoMapper.toResponseDTO(atualizado);
     }
 
-    public void deletarPedidoPorID(Long id) {
+public void cancelarPedidoPorId(Long id, Long clienteId) {
 
-        if (!pedidoRepository.existsById(id)) {
-            throw new RuntimeException("Pedido não encontrado");
-        }
+    Pedido pedido = pedidoRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
 
-        pedidoRepository.deleteById(id);
+    if (!pedido.getCliente().getId().equals(clienteId)) {
+        throw new RuntimeException("Acesso negado");
     }
+
+    if (pedido.getStatus() == StatusPedido.CANCELADO) return;
+
+    pedido.setStatus(StatusPedido.CANCELADO);
+    pedidoRepository.save(pedido);
+}
 
 
 

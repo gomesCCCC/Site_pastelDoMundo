@@ -1,6 +1,7 @@
 package com.projeto.pastel_do_mundo.dto;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.projeto.pastel_do_mundo.Model.StatusPedido;
@@ -16,8 +17,15 @@ public class pedidoResponseDTO {
     private StatusPedido status;
     private BigDecimal total;
     private List<ItemPedidoResponseDTO> itens;
+    private LocalDateTime dataPedido;
     
 
+    public LocalDateTime getDataPedido() {
+        return dataPedido;
+    }
+    public void setDataPedido(LocalDateTime dataPedido) {
+        this.dataPedido = dataPedido;
+    }
     public Long getId() {
         return id;
     }

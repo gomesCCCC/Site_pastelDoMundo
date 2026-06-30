@@ -68,18 +68,81 @@
 
     </section>
 
-    <section class="perfil-section">
+    <section class="perfil-section" id="pedidos">
 
-        <h2>
-            <span class="material-symbols-outlined">receipt_long</span>
-            Meus pedidos
-        </h2>
+    <h2>
+        <span class="material-symbols-outlined">receipt_long</span>
+        Meus pedidos
+    </h2>
 
-        <a href="#" class="opcao">
-            Ver histórico de pedidos
-        </a>
+    <div th:if="${#lists.isEmpty(pedidos)}">
+        <p class="opcao">Nenhum pedido realizado ainda.</p>
+    </div>
 
-    </section>
+    <div th:each="pedido : ${pedidos}" class="pedido-card">
+
+        <div class="pedido-header">
+
+            <div>
+                <strong>#<span th:text="${pedido.id}"></span></strong>
+                <span class="pedido-data"
+                      th:text="${#temporals.format(pedido.dataPedido, 'dd/MM/yyyy HH:mm')}">
+                </span>
+            </div>
+
+            <span class="status"
+                  th:text="${pedido.status}">
+            </span>
+
+        </div>
+
+        <div class="pedido-itens">
+
+            <div th:each="item : ${pedido.itens}" class="pedido-item">
+
+                <span class="item-nome"
+                      th:text="${item.produto.nome}">
+                </span>
+
+                <span class="item-qtd">
+                    x<span th:text="${item.quantidade}"></span>
+                </span>
+
+                <span class="item-preco"
+                      th:text="${'R$ ' + item.precoUni}">
+                </span>
+
+            </div>
+
+        </div>
+
+        <div class="pedido-footer">
+
+            <div class="pedido-total">
+                Total: R$
+                <span th:text="${pedido.total}"></span>
+            </div>
+
+            <form th:action="@{/pedidos/cancelar}" method="post">
+
+                <input type="hidden"
+                       name="pedidoId"
+                       th:value="${pedido.id}">
+
+                <button type="submit"
+                        th:if="${pedido.status != T(com.projeto.pastel_do_mundo.Model.StatusPedido).CANCELADO 
+      and pedido.status != T(com.projeto.pastel_do_mundo.Model.StatusPedido).FINALIZADO}"
+                        class="btn-cancelar">
+                    Cancelar pedido
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</section>
 
     <section class="perfil-section">
 

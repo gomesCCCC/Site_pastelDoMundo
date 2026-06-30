@@ -33,7 +33,7 @@
 
         <div class="orders-wrapper">
 
-            <a href="/pedidos" class="orders-btn">
+            <a href="/perfil#pedidos" class="orders-btn">
                 <span class="material-symbols-outlined">receipt_long</span>
             </a>
 
@@ -49,12 +49,17 @@
 
                 <div th:each="p : ${pedidos}" class="orders-item">
 
-                    <div class="orders-info">
-                        <span>#<span th:text="${p.id}"></span></span>
-                        <span th:text="${p.status}"></span>
-                    </div>
+    <div class="orders-info">
+        <div>Pedido #<span th:text="${p.id}"></span></div>
 
-                </div>
+        <div th:text="${p.status}"></div>
+
+        <div class="orders-date"
+             th:text="${#temporals.format(p.dataPedido, 'dd/MM/yyyy HH:mm')}">
+        </div>
+    </div>
+
+</div>
 
             </div>
 

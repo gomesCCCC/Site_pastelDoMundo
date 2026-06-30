@@ -1,10 +1,14 @@
 package com.projeto.pastel_do_mundo.Model;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -33,6 +37,11 @@ public class Pedido {
 
     @Enumerated(EnumType.STRING)
     private StatusPedido status;
+    
+
+        @CreationTimestamp
+    @Column(updatable = false)
+    private LocalDateTime dataPedido;
 
     private BigDecimal total;
 
@@ -44,7 +53,7 @@ public class Pedido {
 
     }
 
-    public Pedido(Long id,String nome,StatusPedido status,BigDecimal total,String nomeCliente,String telefoneCliente, String enderecoEntrega,String cepEntrega) {
+    public Pedido(Long id,String nome,StatusPedido status,BigDecimal total,String nomeCliente,String telefoneCliente, String enderecoEntrega,String cepEntrega,LocalDateTime dataPedido) {
         this.id = id;
         this.status = status;
         this.total = total;
@@ -52,10 +61,15 @@ public class Pedido {
         this.telefoneCliente = telefoneCliente;
         this.enderecoEntrega = enderecoEntrega;
         this.cepEntrega = cepEntrega;
+        this.dataPedido = dataPedido;
     }
 
     public long getId() {
         return id;
+    }
+
+    public LocalDateTime getDataPedido() {
+        return dataPedido;
     }
 
     public void setId(long id) {

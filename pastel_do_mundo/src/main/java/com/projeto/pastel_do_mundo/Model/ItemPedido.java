@@ -29,15 +29,18 @@ public class ItemPedido {
     private int quantidade;
     private BigDecimal precoUni;
 
-    public ItemPedido() {
 
+    public ItemPedido() {
     }
+
 
     public ItemPedido(Long id,int quantidade,BigDecimal precoUni) {
         this.id = id;
         this.quantidade = quantidade;
         this.precoUni = precoUni;
     }
+
+
 
     public Pedido getPedido() {
         return pedido;

@@ -463,3 +463,9 @@ a.categoria {
     position: relative;
     z-index: 2000;
 }
+
+.orders-date {
+    font-size: 11px;
+    color: #777;
+    margin-top: 4px;
+}
