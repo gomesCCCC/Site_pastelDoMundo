@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ERP Sistema</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/erp.css">
+</head>
+
+<body>
+
+<div class="erp">
+<div id="toastContainer" class="toast-container"></div>
+    <aside class="sidebar">
+
+        <h2>ERP</h2>
+
+        <button class="menu-btn active" data-section="pedidos">Pedidos</button>
+        <button class="menu-btn" data-section="estoque">Estoque</button>
+        <button class="menu-btn" data-section="financeiro">Financeiro</button>
+
+    </aside>
+
+    <main class="content">
+
+        <section id="pedidos" class="section active">
+            <h1>Pedidos</h1>
+            <div id="pedidosContainer"></div>
+        </section>
+
+        <section id="estoque" class="section">
+
+            <h1>Estoque</h1>
+
+            <div class="estoque-grid">
+
+                <div class="table">
+
+                    <div class="table-header">
+                        Produtos
+                    </div>
+
+                    <div id="estoqueTable"></div>
+
+                </div>
+
+                <div class="form-card">
+
+                    <h3>Novo Produto</h3>
+
+<input type="text" name="nome" placeholder="Nome">
+<input type="number" name="preco" placeholder="Preço">
+<input type="text" name="categoria" placeholder="Categoria">
+<input type="text" name="URLimagem" placeholder="URL da imagem">
+<textarea name="descricao" placeholder="Descrição"></textarea>
+<input type="number" name="quantidade" placeholder="Quantidade">
+<input type="text" name="tamanho" placeholder="Tamanho (M, P, G)">
+
+                    <button onclick="createProduct()">Criar Produto</button>
+
+                </div>
+
+            </div>
+
+        </section>
+
+        <section id="financeiro" class="section">
+            <h1>Financeiro</h1>
+            <div class="card">
+                Módulo em desenvolvimento
+            </div>
+        </section>
+
+    </main>
+
+</div>
+
+<script src="/js/erp.js"></script>
+
+</body>
+</html>

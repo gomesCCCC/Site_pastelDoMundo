@@ -80,5 +80,13 @@ public class ProdutoService {
         return dto;
     }
 
+public void atualizarEstoque(Long id, int quantidade) {
+    Produto produto = produtoRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+
+    produto.setQuantidade(produto.getQuantidade() + quantidade);
+
+    produtoRepository.save(produto);
+}
     
 }
