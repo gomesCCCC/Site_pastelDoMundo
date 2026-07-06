@@ -27,20 +27,25 @@ async function loadProdutos() {
     const container = document.getElementById('estoqueTable');
     container.innerHTML = '';
 
-    produtos.forEach(p => {
-container.innerHTML += `
-    <div class="row">
-        <div class="product-name">${p.nome}</div>
+produtos.forEach(p => {
+    const isLow = p.quantidade < 10;
 
-        <div class="qty">${p.quantidade}</div>
+    container.innerHTML += `
+        <div class="row">
+            <div class="product-name">
+                ${p.nome}
+                ${isLow ? '<span class="stock-warning">quase esgotado</span>' : ''}
+            </div>
 
-        <div class="actions">
-            <button class="add" onclick="addStock(${p.id}, '${p.nome.replace(/'/g, "\\'")}')">+ estoque</button>
-            <button class="remove" onclick="deleteProduct(${p.id})">remover</button>
+            <div class="qty ${isLow ? 'low' : ''}">${p.quantidade}</div>
+
+            <div class="actions">
+                <button class="add" onclick="addStock(${p.id}, '${p.nome.replace(/'/g, "\\'")}')">+ estoque</button>
+                <button class="remove" onclick="deleteProduct(${p.id})">remover</button>
+            </div>
         </div>
-    </div>
-`;
-    });
+    `;
+});
 }
 
 window.createProduct = async function () {
