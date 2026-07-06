@@ -143,7 +143,8 @@ body {
 }
 
 .form-card input,
-.form-card textarea {
+.form-card textarea,
+.form-card select {
     width: 100%;
     padding: 10px;
     margin-top: 8px;
@@ -152,6 +153,15 @@ body {
     border-radius: 8px;
     box-sizing: border-box;
     outline: none;
+    font-family: 'Poppins', sans-serif;
+    background: #fff;
+}
+
+.form-card input:focus,
+.form-card textarea:focus,
+.form-card select:focus {
+    border-color: #f0c14b;
+    box-shadow: 0 0 0 3px rgba(240, 193, 75, 0.25);
 }
 
 .form-card button {
@@ -311,3 +321,4 @@ body {
     content: "warning";
     font-size: 14px;
 }
+

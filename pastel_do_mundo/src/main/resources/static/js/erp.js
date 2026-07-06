@@ -50,15 +50,15 @@ produtos.forEach(p => {
 
 window.createProduct = async function () {
 
-    const dto = {
-        nome: document.querySelector('[name="nome"]').value,
-        preco: Number(document.querySelector('[name="preco"]').value),
-        categoria: document.querySelector('[name="categoria"]').value,
-        URLimagem: document.querySelector('[name="URLimagem"]').value,
-        descricao: document.querySelector('[name="descricao"]').value,
-        quantidade: Number(document.querySelector('[name="quantidade"]').value),
-        tamanho: document.querySelector('[name="tamanho"]').value?.charAt(0)
-    };
+const dto = {
+    nome: document.querySelector('[name="nome"]').value,
+    preco: Number(document.querySelector('[name="preco"]').value),
+    categoria: document.querySelector('[name="categoria"]').value,
+    URLimagem: document.querySelector('[name="URLimagem"]').value,
+    descricao: document.querySelector('[name="descricao"]').value,
+    quantidade: Number(document.querySelector('[name="quantidade"]').value),
+    tamanho: document.querySelector('[name="tamanho"]').value?.charAt(0)
+};
 
     const res = await fetch('/api/produtos', {
         method: 'POST',
