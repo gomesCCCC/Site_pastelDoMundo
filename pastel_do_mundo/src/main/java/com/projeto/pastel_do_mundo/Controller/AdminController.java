@@ -12,4 +12,10 @@ public class AdminController {
     public String erp() {
         return "admin/erp";
     }
+
+    @GetMapping("/admin/estoque")
+public String estoquePage() {
+    return "estoque";
+}
+
 }
