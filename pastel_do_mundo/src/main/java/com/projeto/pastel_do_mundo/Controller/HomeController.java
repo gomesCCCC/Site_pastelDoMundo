@@ -37,7 +37,7 @@ public class HomeController {
 @GetMapping("/")
 public String home(Model model, HttpSession session) {
 
-    List<produtoResponseDTO> produtos = produtoService.listarProduto();
+    List<produtoResponseDTO> produtos = produtoService.listarProdutosDisponiveis();
 
     Map<String, List<produtoResponseDTO>> produtosPorCategoria = produtos.stream()
         .collect(java.util.stream.Collectors.groupingBy(produtoResponseDTO::getCategoria));
