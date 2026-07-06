@@ -180,3 +180,53 @@ window.createProduct = async function () {
     clearForm();
     loadProdutos();
 };
+
+async function loadProdutos() {
+    const res = await fetch('/api/produtos');
+    const produtos = await res.json();
+
+    const container = document.getElementById('estoqueTable');
+    container.innerHTML = '';
+
+    produtos.forEach(p => {
+        const isLow = p.quantidade < 10;
+        const isInactive = !p.ativo;
+
+        container.innerHTML += `
+            <div class="row ${isInactive ? 'inactive' : ''}">
+                <div class="product-name">
+                    ${p.nome}
+                    ${isLow ? '<span class="stock-warning">quase esgotado</span>' : ''}
+                </div>
+
+                <div class="qty ${isLow ? 'low' : ''}">${p.quantidade}</div>
+
+                <div class="actions">
+                    <button class="add" onclick="addStock(${p.id}, '${p.nome.replace(/'/g, "\\'")}')">+ estoque</button>
+                    <button class="toggle-btn ${isInactive ? 'reativar' : ''}" onclick="toggleDisponibilidade(${p.id})">
+                        ${isInactive ? 'reativar' : 'desativar'}
+                    </button>
+                    <button class="remove" onclick="deleteProduct(${p.id})">remover</button>
+                </div>
+            </div>
+        `;
+    });
+}
+
+window.toggleDisponibilidade = async function (id) {
+    const res = await fetch(`/api/produtos/${id}/disponibilidade`, {
+        method: 'PATCH'
+    });
+
+    if (!res.ok) {
+        showToast('Erro ao atualizar disponibilidade', 'error');
+        return;
+    }
+
+    const produto = await res.json();
+    showToast(
+        produto.ativo ? 'Produto reativado no cardápio' : 'Produto removido do cardápio',
+        produto.ativo ? 'success' : 'error'
+    );
+    loadProdutos();
+};

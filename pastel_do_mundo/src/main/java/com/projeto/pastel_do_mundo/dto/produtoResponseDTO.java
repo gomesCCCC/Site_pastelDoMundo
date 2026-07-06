@@ -12,6 +12,7 @@ public class produtoResponseDTO {
     private char tamanho;
     private int quantidade;
     private String categoria;
+    private Boolean ativo;
 
     public Long getId() {
         return id;
@@ -77,5 +78,14 @@ public class produtoResponseDTO {
         this.categoria = categoria;
     }
 
+    public Boolean getAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(Boolean ativo) {
+        this.ativo = ativo;
+    }
+
+    
     
 }

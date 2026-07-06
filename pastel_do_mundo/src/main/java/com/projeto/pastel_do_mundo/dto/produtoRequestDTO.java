@@ -31,6 +31,7 @@ public class produtoRequestDTO {
     @NotEmpty (message="Produto precisa de uma categoria")
     private String categoria;
 
+
     public Long getId() {
         return id;
     }
@@ -95,5 +96,7 @@ public class produtoRequestDTO {
         this.categoria = categoria;
     }
 
+
+    
     
 }

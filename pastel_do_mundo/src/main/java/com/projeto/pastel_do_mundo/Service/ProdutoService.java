@@ -39,21 +39,22 @@ public class ProdutoService {
         return toResponseDTO(produto);
     }
 
-    public produtoResponseDTO cadastrarProduto(produtoRequestDTO dto) {
-        Produto produto = new Produto();
+public produtoResponseDTO cadastrarProduto(produtoRequestDTO dto) {
+    Produto produto = new Produto();
 
-        produto.setNome(dto.getNome());
-        produto.setPreco(dto.getPreco());
-        produto.setURLimagem(dto.getURLimagem());
-        produto.setTamanho(dto.getTamanho());
-        produto.setQuantidade(dto.getQuantidade());
-        produto.setDescricao(dto.getDescricao());
-        produto.setCategoria(dto.getCategoria());
+    produto.setNome(dto.getNome());
+    produto.setPreco(dto.getPreco());
+    produto.setURLimagem(dto.getURLimagem());
+    produto.setQuantidade(dto.getQuantidade());
+    produto.setTamanho(dto.getTamanho());
+    produto.setDescricao(dto.getDescricao());
+    produto.setCategoria(dto.getCategoria());
+    produto.setAtivo(true); 
 
-        Produto salvo = produtoRepository.save(produto);
+    Produto salvo = produtoRepository.save(produto);
 
-        return toResponseDTO(salvo);
-    }
+    return toResponseDTO(salvo);
+}
 
     public List<produtoResponseDTO> listarPorCategoria(String categoria) {
     return produtoRepository.findAll()
@@ -68,17 +69,18 @@ public class ProdutoService {
     }
 
     private produtoResponseDTO toResponseDTO(Produto produto) {
-        produtoResponseDTO dto = new produtoResponseDTO();
-        dto.setId(produto.getId());
-        dto.setNome(produto.getNome());
-        dto.setPreco(produto.getPreco());
-        dto.setURLimagem(produto.getURLimagem());
-        dto.setQuantidade(produto.getQuantidade());
-        dto.setTamanho(produto.getTamanho());
-        dto.setDescricao(produto.getDescricao());
-        dto.setCategoria(produto.getCategoria());
-        return dto;
-    }
+    produtoResponseDTO dto = new produtoResponseDTO();
+    dto.setId(produto.getId());
+    dto.setNome(produto.getNome());
+    dto.setPreco(produto.getPreco());
+    dto.setURLimagem(produto.getURLimagem());
+    dto.setQuantidade(produto.getQuantidade());
+    dto.setTamanho(produto.getTamanho());
+    dto.setDescricao(produto.getDescricao());
+    dto.setCategoria(produto.getCategoria());
+    dto.setAtivo(produto.isAtivo());
+    return dto;
+}
 
 public void atualizarEstoque(Long id, int quantidade) {
     Produto produto = produtoRepository.findById(id)
@@ -87,6 +89,23 @@ public void atualizarEstoque(Long id, int quantidade) {
     produto.setQuantidade(produto.getQuantidade() + quantidade);
 
     produtoRepository.save(produto);
+}
+
+public produtoResponseDTO alternarDisponibilidade(Long id) {
+    Produto produto = produtoRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+
+    produto.setAtivo(!produto.isAtivo());
+
+    Produto salvo = produtoRepository.save(produto);
+    return toResponseDTO(salvo);
+}
+
+public List<produtoResponseDTO> listarProdutosDisponiveis() {
+    return produtoRepository.findByAtivoTrue()
+        .stream()
+        .map(this::toResponseDTO)
+        .collect(Collectors.toList());
 }
     
 }

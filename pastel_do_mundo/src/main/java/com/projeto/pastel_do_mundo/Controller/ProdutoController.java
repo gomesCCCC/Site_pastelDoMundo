@@ -51,6 +51,11 @@ public class ProdutoController {
     @PatchMapping("/{id}/estoque")
 public void atualizarEstoque(@PathVariable Long id, @RequestParam int quantidade) {
     produtoService.atualizarEstoque(id, quantidade);
+}  
+
+@PatchMapping("/{id}/disponibilidade")
+public produtoResponseDTO alternarDisponibilidade(@PathVariable Long id) {
+    return produtoService.alternarDisponibilidade(id);
 }
 
 }

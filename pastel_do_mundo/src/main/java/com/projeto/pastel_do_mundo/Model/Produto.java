@@ -23,7 +23,8 @@ public class Produto {
     private char tamanho;
     private int quantidade;
     private String categoria;
-
+    private boolean ativo = true; 
+    
     public Produto() {
 
     }
@@ -102,6 +103,14 @@ public class Produto {
     public void setCategoria(String categoria) {
         this.categoria = categoria;
     }
+
+    public boolean isAtivo() {
+    return ativo;
+}
+
+public void setAtivo(boolean ativo) {
+    this.ativo = ativo;
+}
 
     
 }
