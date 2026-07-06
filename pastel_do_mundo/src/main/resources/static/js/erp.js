@@ -28,18 +28,18 @@ async function loadProdutos() {
     container.innerHTML = '';
 
     produtos.forEach(p => {
-        container.innerHTML += `
-            <div class="row">
-                <div class="product-name">${p.nome}</div>
+container.innerHTML += `
+    <div class="row">
+        <div class="product-name">${p.nome}</div>
 
-                <div class="qty">${p.quantidade}</div>
+        <div class="qty">${p.quantidade}</div>
 
-                <div class="actions">
-                    <button class="add" onclick="addStock(${p.id})">+ estoque</button>
-                    <button class="remove" onclick="deleteProduct(${p.id})">remover</button>
-                </div>
-            </div>
-        `;
+        <div class="actions">
+            <button class="add" onclick="addStock(${p.id}, '${p.nome.replace(/'/g, "\\'")}')">+ estoque</button>
+            <button class="remove" onclick="deleteProduct(${p.id})">remover</button>
+        </div>
+    </div>
+`;
     });
 }
 
@@ -80,11 +80,44 @@ window.deleteProduct = async function (id) {
     loadProdutos();
 };
 
-window.addStock = async function (id) {
-    await fetch(`/api/produtos/${id}/estoque?quantidade=1`, {
+let selectedProductId = null;
+
+window.addStock = function (id, nome) {
+    selectedProductId = id;
+    document.getElementById('qtyModalProductName').textContent = nome;
+
+    const input = document.getElementById('qtyModalInput');
+    input.value = 1;
+
+    document.getElementById('qtyModalOverlay').classList.add('show');
+    input.focus();
+};
+
+window.closeQtyModal = function () {
+    document.getElementById('qtyModalOverlay').classList.remove('show');
+    selectedProductId = null;
+};
+
+window.confirmAddStock = async function () {
+    const input = document.getElementById('qtyModalInput');
+    const quantidade = Number(input.value);
+
+    if (!quantidade || quantidade <= 0) {
+        showToast('Informe uma quantidade válida', 'error');
+        return;
+    }
+
+    const res = await fetch(`/api/produtos/${selectedProductId}/estoque?quantidade=${quantidade}`, {
         method: 'PATCH'
     });
 
+    if (!res.ok) {
+        showToast('Erro ao atualizar estoque', 'error');
+        return;
+    }
+
+    closeQtyModal();
+    showToast('Estoque atualizado!', 'success');
     loadProdutos();
 };
 

@@ -16,6 +16,19 @@
 
 <div class="erp">
 <div id="toastContainer" class="toast-container"></div>
+<div id="qtyModalOverlay" class="modal-overlay">
+    <div class="modal">
+        <h3>Adicionar ao estoque</h3>
+        <p id="qtyModalProductName" class="modal-subtitle"></p>
+
+        <input type="number" id="qtyModalInput" min="1" value="1">
+
+        <div class="modal-actions">
+            <button class="modal-cancel" onclick="closeQtyModal()">Cancelar</button>
+            <button class="modal-confirm" onclick="confirmAddStock()">Adicionar</button>
+        </div>
+    </div>
+</div>
     <aside class="sidebar">
 
         <h2>ERP</h2>
