@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     setupMenu();
     loadProdutos();
+    loadPedidos();
 });
 
 function setupMenu() {
@@ -230,3 +231,154 @@ window.toggleDisponibilidade = async function (id) {
     );
     loadProdutos();
 };
+
+async function loadPedidos() {
+
+    const res = await fetch("/pedidos");
+
+    if (!res.ok) {
+        showToast("Erro ao carregar pedidos", "error");
+        return;
+    }
+
+    const pedidos = await res.json();
+
+    const container = document.getElementById("pedidosContainer");
+    container.innerHTML = "";
+
+    if (pedidos.length === 0) {
+        container.innerHTML = `
+            <div class="card">
+                Nenhum pedido encontrado.
+            </div>
+        `;
+        return;
+    }
+
+    pedidos.forEach(pedido => {
+
+        const itens = pedido.itens.map(item => `
+            <li>
+                ${item.quantidade}x ${item.nomeProduto}
+                - R$ ${Number(item.subtotal).toFixed(2)}
+            </li>
+        `).join("");
+
+        container.innerHTML += `
+
+            <div class="pedido-card">
+
+                <div class="pedido-header">
+
+                    <div>
+                        <strong>Pedido #${pedido.id}</strong>
+                        <span class="status ${pedido.status.toLowerCase()}">
+                            ${pedido.status}
+                        </span>
+                    </div>
+
+                    <div>
+                        ${formatDate(pedido.dataPedido)}
+                    </div>
+
+                </div>
+
+                <div class="pedido-info">
+
+                    <p><strong>Cliente:</strong> ${pedido.nomeCliente}</p>
+
+                    <p><strong>Telefone:</strong> ${pedido.telefoneCliente}</p>
+
+                    <p><strong>Endereço:</strong> ${pedido.enderecoEntrega}</p>
+
+                    <p><strong>CEP:</strong> ${pedido.cepEntrega}</p>
+
+                </div>
+
+                <div class="pedido-itens">
+
+                    <strong>Itens</strong>
+
+                    <ul>
+
+                        ${itens}
+
+                    </ul>
+
+                </div>
+
+                <div class="pedido-footer">
+
+                    <strong>Total: R$ ${Number(pedido.total).toFixed(2)}</strong>
+
+                    <div class="pedido-actions">
+
+                        ${pedido.status === "ABERTO" ? `
+                            <button class="confirmar"
+                                onclick="confirmarPagamento(${pedido.id})">
+                                Confirmar pagamento
+                            </button>
+
+                            <button class="cancelar"
+                                onclick="cancelarPedido(${pedido.id})">
+                                Cancelar
+                            </button>
+                        ` : ""}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        `;
+    });
+
+}
+
+window.confirmarPagamento = async function(id){
+
+    const res = await fetch(`/pedidos/admin/${id}/pagamento`,{
+        method:"PUT"
+    });
+
+    if(!res.ok){
+        showToast("Erro ao confirmar pagamento","error");
+        return;
+    }
+
+    showToast("Pagamento confirmado!");
+
+    loadPedidos();
+    loadProdutos();
+}
+
+window.cancelarPedido = async function(id){
+
+    if(!confirm("Cancelar este pedido?")){
+        return;
+    }
+
+    const res = await fetch(`/pedidos/admin/${id}/cancelar`,{
+        method:"PUT"
+    });
+
+    if(!res.ok){
+        showToast("Erro ao cancelar pedido","error");
+        return;
+    }
+
+    showToast("Pedido cancelado");
+
+    loadPedidos();
+    loadProdutos();
+}
+
+function formatDate(data){
+
+    return new Date(data).toLocaleString("pt-BR",{
+        dateStyle:"short",
+        timeStyle:"short"
+    });
+
+}

@@ -346,3 +346,112 @@ body {
 .toggle-btn.reativar {
     background: #d7f0d7;
 }
+
+.pedido-card{
+
+    background:#fff;
+    border:1px solid #eee;
+    border-radius:12px;
+    padding:18px;
+    margin-bottom:18px;
+
+}
+
+.pedido-header{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+
+}
+
+.pedido-info p{
+
+    margin:4px 0;
+
+}
+
+.pedido-itens{
+
+    margin-top:15px;
+
+}
+
+.pedido-itens ul{
+
+    margin:8px 0;
+    padding-left:20px;
+
+}
+
+.pedido-footer{
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:20px;
+    border-top:1px solid #eee;
+    padding-top:15px;
+
+}
+
+.pedido-actions{
+
+    display:flex;
+    gap:10px;
+
+}
+
+.confirmar{
+
+    background:#2e7d32;
+    color:white;
+    border:none;
+    border-radius:8px;
+    padding:8px 12px;
+    cursor:pointer;
+
+}
+
+.cancelar{
+
+    background:#c62828;
+    color:white;
+    border:none;
+    border-radius:8px;
+    padding:8px 12px;
+    cursor:pointer;
+
+}
+
+.status{
+
+    margin-left:10px;
+    padding:4px 10px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+
+}
+
+.status.aberto{
+
+    background:#fff3cd;
+    color:#b7791f;
+
+}
+
+.status.finalizado{
+
+    background:#d4edda;
+    color:#1b5e20;
+
+}
+
+.status.cancelado{
+
+    background:#ffd7d7;
+    color:#b71c1c;
+
+}
