@@ -49,6 +49,8 @@ public class Pedido {
     private String telefoneCliente;
     private String enderecoEntrega;
     private String cepEntrega;
+    private boolean estoqueDebitado = false;
+
     public Pedido() {
 
     }
@@ -138,6 +140,14 @@ public class Pedido {
 
     public void setCepEntrega(String cepEntrega) {
         this.cepEntrega = cepEntrega;
+    }
+
+    public boolean isEstoqueDebitado() {
+        return estoqueDebitado;
+    }
+
+    public void setEstoqueDebitado(boolean estoqueDebitado) {
+        this.estoqueDebitado = estoqueDebitado;
     }
 
 
