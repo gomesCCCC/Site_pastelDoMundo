@@ -2,6 +2,7 @@ package com.projeto.pastel_do_mundo.Controller;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -79,8 +80,10 @@ public String home(Model model, HttpSession session) {
  Cliente cliente = (Cliente) session.getAttribute("usuario");
 
 if (cliente != null) {
-    List<Pedido> pedidos = pedidoRepository.findByClienteId(cliente.getId());
+    List<Pedido> pedidos = pedidoRepository.findByClienteIdOrderByDataPedidoDesc(cliente.getId());
     model.addAttribute("pedidos", pedidos);
+} else {
+    model.addAttribute("pedidos", Collections.emptyList());
 }
 
     return "home";

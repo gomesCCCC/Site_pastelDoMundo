@@ -70,9 +70,6 @@ public Pedido criarPedidoAberto(Long clienteId, Map<Long, Integer> carrinho) {
             throw new RuntimeException("Estoque insuficiente");
         }
 
-        produto.setQuantidade(produto.getQuantidade() - quantidade);
-        produtoRepository.save(produto);
-
         BigDecimal subtotal =
                 produto.getPreco().multiply(BigDecimal.valueOf(quantidade));
 
@@ -95,7 +92,7 @@ public Pedido criarPedidoAberto(Long clienteId, Map<Long, Integer> carrinho) {
 
     public List<pedidoResponseDTO> listarPedido() {
 
-        return pedidoRepository.findAll()
+        return pedidoRepository.findAllByOrderByDataPedidoDesc()
                 .stream()
                 .map(pedidoMapper::toResponseDTO)
                 .collect(Collectors.toList());
@@ -106,6 +103,22 @@ public void marcarComoPago(Long pedidoId) {
 
     Pedido pedido = pedidoRepository.findById(pedidoId)
             .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+
+    if (!pedido.isEstoqueDebitado()) {
+        for (ItemPedido item : pedido.getItens()) {
+            Produto produto = item.getProduto();
+            int quantidade = item.getQuantidade();
+
+            if (produto.getQuantidade() < quantidade) {
+                throw new RuntimeException("Estoque insuficiente para finalizar o pedido");
+            }
+
+            produto.setQuantidade(produto.getQuantidade() - quantidade);
+            produtoRepository.save(produto);
+        }
+
+        pedido.setEstoqueDebitado(true);
+    }
 
     pedido.setStatus(StatusPedido.FINALIZADO);
 

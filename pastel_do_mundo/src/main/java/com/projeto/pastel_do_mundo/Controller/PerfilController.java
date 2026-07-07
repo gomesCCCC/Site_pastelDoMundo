@@ -46,7 +46,7 @@ public String perfil(HttpSession session, Model model) {
 
     model.addAttribute("cliente", cliente);
 
-    List<Pedido> pedidos = pedidoRepository.findByClienteId(cliente.getId());
+    List<Pedido> pedidos = pedidoRepository.findByClienteIdOrderByDataPedidoDesc(cliente.getId());
     model.addAttribute("pedidos", pedidos);
 
     return "perfil";

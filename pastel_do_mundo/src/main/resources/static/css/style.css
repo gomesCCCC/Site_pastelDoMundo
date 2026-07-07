@@ -267,6 +267,8 @@ a.categoria {
     position: relative;
     display: flex;
     align-items: center;
+    padding-bottom: 8px;
+    margin-bottom: -8px;
 }
 
 .profile-btn {
@@ -281,7 +283,8 @@ a.categoria {
     color: #222;
 }
 
-.profile-btn-wrapper:hover .profile-dropdown {
+.profile-btn-wrapper:hover .profile-dropdown,
+.profile-btn-wrapper:focus-within .profile-dropdown {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
@@ -319,7 +322,7 @@ a.categoria {
 
 .profile-dropdown {
     position: absolute;
-    top: 45px;
+    top: calc(100% - 8px);
     right: 0;
 
     min-width: 150px;
@@ -368,6 +371,8 @@ a.categoria {
     position: relative;
     display: flex;
     align-items: center;
+    padding-bottom: 8px;
+    margin-bottom: -8px;
 }
 
 .orders-btn {
@@ -383,7 +388,6 @@ a.categoria {
     color: #222;
     text-decoration: none;
     cursor: pointer;
-    pointer-events: none;
     margin-right: 12px;
 }
 
@@ -403,7 +407,7 @@ a.categoria {
 
 .orders-dropdown {
     position: absolute;
-    top: 45px;
+    top: calc(100% - 8px);
     right: 0;
 
     min-width: 200px;
@@ -445,7 +449,8 @@ a.categoria {
     color: #777;
 }
 
-.orders-wrapper:hover .orders-dropdown {
+.orders-wrapper:hover .orders-dropdown,
+.orders-wrapper:focus-within .orders-dropdown {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;

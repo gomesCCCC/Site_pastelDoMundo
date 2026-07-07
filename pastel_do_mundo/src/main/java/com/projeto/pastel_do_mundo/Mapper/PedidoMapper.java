@@ -25,6 +25,7 @@ public class PedidoMapper {
     dto.setTelefoneCliente(pedido.getTelefoneCliente());
     dto.setEnderecoEntrega(pedido.getEnderecoEntrega());
     dto.setCepEntrega(pedido.getCepEntrega());
+    dto.setDataPedido(pedido.getDataPedido());
 
 
 

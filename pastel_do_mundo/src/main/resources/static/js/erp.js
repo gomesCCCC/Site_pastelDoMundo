@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     setupMenu();
+    loadPedidos();
     loadProdutos();
 });
 
@@ -16,8 +17,128 @@ function setupMenu() {
 
             buttons.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
+
+            if (target === 'pedidos') {
+                loadPedidos();
+            }
         });
     });
+}
+
+async function loadPedidos() {
+    const container = document.getElementById('pedidosContainer');
+    container.innerHTML = '<div class="card">Carregando pedidos...</div>';
+
+    try {
+        const res = await fetch('/pedidos');
+
+        if (!res.ok) {
+            throw new Error(await res.text());
+        }
+
+        const pedidos = await res.json();
+
+        if (!pedidos.length) {
+            container.innerHTML = '<div class="card">Nenhum pedido encontrado.</div>';
+            return;
+        }
+
+        container.innerHTML = pedidos.map(pedido => {
+            const itens = (pedido.itens || []).map(item => `
+                <div class="pedido-item">
+                    <span>${escapeHtml(item.nomeProduto || 'Produto')}</span>
+                    <span>x${item.quantidade}</span>
+                    <span>R$ ${formatMoney(item.subtotal ?? item.precoUni)}</span>
+                </div>
+            `).join('');
+
+            return `
+                <div class="pedido-card">
+                    <div class="pedido-card-header">
+                        <div>
+                            <strong>Pedido #${pedido.id}</strong>
+                            <span>${formatDate(pedido.dataPedido)}</span>
+                        </div>
+                        <span class="status-badge status-${String(pedido.status).toLowerCase()}">${pedido.status}</span>
+                    </div>
+
+                    <div class="pedido-grid">
+                        <div>
+                            <strong>${escapeHtml(pedido.nomeCliente || 'Cliente')}</strong>
+                            <span>${escapeHtml(pedido.telefoneCliente || 'Sem telefone')}</span>
+                        </div>
+                        <div>
+                            <strong>Entrega</strong>
+                            <span>${escapeHtml(pedido.enderecoEntrega || 'Endereco nao informado')}</span>
+                        </div>
+                        <div>
+                            <strong>Total</strong>
+                            <span>R$ ${formatMoney(pedido.total)}</span>
+                        </div>
+                    </div>
+
+                    <div class="pedido-itens">
+                        ${itens || '<div class="pedido-item">Sem itens registrados.</div>'}
+                    </div>
+
+                    <div class="pedido-actions">
+                        <select onchange="updatePedidoStatus(${pedido.id}, this.value)">
+                            ${statusOption('ABERTO', pedido.status)}
+                            ${statusOption('PROCESSANDO', pedido.status)}
+                            ${statusOption('FINALIZADO', pedido.status)}
+                            ${statusOption('CANCELADO', pedido.status)}
+                        </select>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    } catch (error) {
+        console.error(error);
+        container.innerHTML = '<div class="card">Erro ao carregar pedidos.</div>';
+    }
+}
+
+window.updatePedidoStatus = async function (id, status) {
+    const res = await fetch(`/pedidos/${id}/status?status=${status}`, {
+        method: 'PATCH'
+    });
+
+    if (!res.ok) {
+        showToast('Erro ao atualizar pedido', 'error');
+        loadPedidos();
+        return;
+    }
+
+    showToast('Pedido atualizado!', 'success');
+    loadPedidos();
+};
+
+function statusOption(value, current) {
+    return `<option value="${value}" ${value === current ? 'selected' : ''}>${value}</option>`;
+}
+
+function formatDate(value) {
+    if (!value) return 'Sem data';
+    return new Intl.DateTimeFormat('pt-BR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    }).format(new Date(value));
+}
+
+function formatMoney(value) {
+    return Number(value || 0).toFixed(2).replace('.', ',');
+}
+
+function escapeHtml(value) {
+    return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
 }
 
 async function loadProdutos() {
