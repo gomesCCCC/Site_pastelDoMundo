@@ -122,15 +122,44 @@ public pedidoResponseDTO acharPorIdPedido(Long id) {
 
     public pedidoResponseDTO atualizarStatus(Long id, StatusPedido status) {
 
-        Pedido pedido = pedidoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+    Pedido pedido = pedidoRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
 
-        pedido.setStatus(status);
-
-        Pedido atualizado = pedidoRepository.save(pedido);
-
-        return pedidoMapper.toResponseDTO(atualizado);
+    if (!podeAlterarStatus(pedido.getStatus(), status)) {
+        throw new RuntimeException(
+            "Não é possível alterar pedido de "
+            + pedido.getStatus()
+            + " para "
+            + status
+        );
     }
+
+    pedido.setStatus(status);
+
+    Pedido atualizado = pedidoRepository.save(pedido);
+
+    return pedidoMapper.toResponseDTO(atualizado);
+}
+
+
+    private boolean podeAlterarStatus(
+        StatusPedido atual,
+        StatusPedido novo
+) {
+
+    return switch (atual) {
+
+        case ABERTO ->
+                novo == StatusPedido.PROCESSANDO ||
+                novo == StatusPedido.CANCELADO;
+
+        case PROCESSANDO ->
+                novo == StatusPedido.FINALIZADO;
+
+        case FINALIZADO, CANCELADO ->
+                false;
+    };
+}
 
 public void cancelarPedidoPorId(Long id, Long clienteId) {
 
