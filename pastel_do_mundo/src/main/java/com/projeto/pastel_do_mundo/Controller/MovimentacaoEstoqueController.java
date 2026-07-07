@@ -1,5 +1,7 @@
 package com.projeto.pastel_do_mundo.Controller;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.projeto.pastel_do_mundo.Service.MovimentacaoEstoqueService;
 import com.projeto.pastel_do_mundo.dto.MovimentacaoRequest;
+import com.projeto.pastel_do_mundo.dto.MovimentacaoResponseDTO;
 
 @RestController
 @RequestMapping("/estoque")
@@ -34,4 +37,9 @@ public class MovimentacaoEstoqueController {
     public Integer estoque(@PathVariable Long produtoId) {
         return service.getEstoqueAtual(produtoId);
     }
+
+    @GetMapping("/historico")
+public List<MovimentacaoResponseDTO> historico() {
+    return service.listarHistorico();
+}
 }

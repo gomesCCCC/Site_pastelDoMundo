@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.projeto.pastel_do_mundo.Model.Produto;
+import com.projeto.pastel_do_mundo.Model.TipoMovimentacao;
 import com.projeto.pastel_do_mundo.Repository.ProdutoRepository;
 import com.projeto.pastel_do_mundo.dto.produtoRequestDTO;
 import com.projeto.pastel_do_mundo.dto.produtoResponseDTO;
@@ -14,11 +16,19 @@ import com.projeto.pastel_do_mundo.dto.produtoResponseDTO;
 
 public class ProdutoService {
 
-    private final ProdutoRepository produtoRepository;
+private final MovimentacaoEstoqueService movimentacaoEstoqueService;
+private final ProdutoRepository produtoRepository;
 
-    public ProdutoService(ProdutoRepository produtoRepository) {
-        this.produtoRepository = produtoRepository;
-    }
+public ProdutoService(ProdutoRepository produtoRepository,
+                      MovimentacaoEstoqueService movimentacaoEstoqueService) {
+    this.produtoRepository = produtoRepository;
+    this.movimentacaoEstoqueService = movimentacaoEstoqueService;
+}
+
+@Transactional
+public void atualizarEstoque(Long id, int quantidade, String motivo) {
+    movimentacaoEstoqueService.registrar(id, quantidade, TipoMovimentacao.ENTRADA, motivo);
+}
 
     public List<produtoResponseDTO> listarProduto() {
         return produtoRepository.findAll()
@@ -39,6 +49,7 @@ public class ProdutoService {
         return toResponseDTO(produto);
     }
 
+@Transactional
 public produtoResponseDTO cadastrarProduto(produtoRequestDTO dto) {
     Produto produto = new Produto();
 
@@ -49,13 +60,48 @@ public produtoResponseDTO cadastrarProduto(produtoRequestDTO dto) {
     produto.setTamanho(dto.getTamanho());
     produto.setDescricao(dto.getDescricao());
     produto.setCategoria(dto.getCategoria());
-    produto.setAtivo(true); 
+    produto.setAtivo(true);
 
     Produto salvo = produtoRepository.save(produto);
+
+    movimentacaoEstoqueService.registrarEvento(
+        salvo.getId(), salvo.getNome(), TipoMovimentacao.CRIACAO, "Produto cadastrado"
+    );
 
     return toResponseDTO(salvo);
 }
 
+@Transactional
+public produtoResponseDTO alternarDisponibilidade(Long id, String motivo) {
+    Produto produto = produtoRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+
+    boolean novoStatus = !produto.isAtivo();
+    produto.setAtivo(novoStatus);
+
+    Produto salvo = produtoRepository.save(produto);
+
+    movimentacaoEstoqueService.registrarEvento(
+        salvo.getId(),
+        salvo.getNome(),
+        novoStatus ? TipoMovimentacao.REATIVACAO : TipoMovimentacao.DESATIVACAO,
+        motivo
+    );
+
+    return toResponseDTO(salvo);
+}
+
+@Transactional
+public void eliminarProduto(Long id, String motivo) {
+    Produto produto = produtoRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+
+    movimentacaoEstoqueService.registrarEvento(
+        produto.getId(), produto.getNome(), TipoMovimentacao.REMOCAO, motivo
+    );
+
+    produtoRepository.deleteById(id);
+}
     public List<produtoResponseDTO> listarPorCategoria(String categoria) {
     return produtoRepository.findAll()
         .stream()

@@ -1,5 +1,7 @@
 package com.projeto.pastel_do_mundo.Repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,7 +20,10 @@ public interface MovimentacaoEstoqueRepository extends JpaRepository<Movimentaca
             END
         ), 0)
         FROM MovimentacaoEstoque m
-        WHERE m.produto.id = :produtoId
+        WHERE m.produtoId = :produtoId
     """)
     Integer calcularEstoque(@Param("produtoId") Long produtoId);
+
+    @Query("SELECT m FROM MovimentacaoEstoque m ORDER BY m.data DESC")
+    List<MovimentacaoEstoque> listarTodasOrdenado();
 }

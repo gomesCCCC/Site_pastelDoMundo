@@ -43,19 +43,24 @@ public class ProdutoController {
         return produtoService.cadastrarProduto(dto);
     }
 
-    @DeleteMapping("/{id}")
-    public void deletar(@PathVariable Long id) {
-        produtoService.eliminarProduto(id);
-    }
 
-    @PatchMapping("/{id}/estoque")
-public void atualizarEstoque(@PathVariable Long id, @RequestParam int quantidade) {
-    produtoService.atualizarEstoque(id, quantidade);
-}  
+
+@DeleteMapping("/{id}")
+public void deletar(@PathVariable Long id, @RequestParam(required = false) String motivo) {
+    produtoService.eliminarProduto(id, motivo);
+}
 
 @PatchMapping("/{id}/disponibilidade")
-public produtoResponseDTO alternarDisponibilidade(@PathVariable Long id) {
-    return produtoService.alternarDisponibilidade(id);
+public produtoResponseDTO alternarDisponibilidade(@PathVariable Long id,
+                                                   @RequestParam(required = false) String motivo) {
+    return produtoService.alternarDisponibilidade(id, motivo);
+}
+
+@PatchMapping("/{id}/estoque")
+public void atualizarEstoque(@PathVariable Long id,
+                              @RequestParam int quantidade,
+                              @RequestParam(required = false) String motivo) {
+    produtoService.atualizarEstoque(id, quantidade, motivo);
 }
 
 }

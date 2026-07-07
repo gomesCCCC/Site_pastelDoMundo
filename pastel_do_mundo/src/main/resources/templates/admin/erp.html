@@ -15,13 +15,16 @@
 <body>
 
 <div class="erp">
+
 <div id="toastContainer" class="toast-container"></div>
+
 <div id="qtyModalOverlay" class="modal-overlay">
     <div class="modal">
         <h3>Adicionar ao estoque</h3>
         <p id="qtyModalProductName" class="modal-subtitle"></p>
 
         <input type="number" id="qtyModalInput" min="1" value="1">
+        <input type="text" id="qtyModalMotivo" placeholder="Motivo opcional (ex: reposição, compra do fornecedor)">
 
         <div class="modal-actions">
             <button class="modal-cancel" onclick="closeQtyModal()">Cancelar</button>
@@ -29,71 +32,102 @@
         </div>
     </div>
 </div>
-    <aside class="sidebar">
 
-        <h2>ERP</h2>
+<div id="motivoModalOverlay" class="modal-overlay">
+    <div class="modal">
+        <h3 id="motivoModalTitle">Confirmar ação</h3>
+        <p id="motivoModalProductName" class="modal-subtitle"></p>
 
-        <button class="menu-btn active" data-section="pedidos">Pedidos</button>
-        <button class="menu-btn" data-section="estoque">Estoque</button>
-        <button class="menu-btn" data-section="financeiro">Financeiro</button>
+        <input type="text" id="motivoModalInput" placeholder="Motivo opcional">
 
-    </aside>
+        <div class="modal-actions">
+            <button class="modal-cancel" onclick="closeMotivoModal()">Cancelar</button>
+            <button class="modal-confirm" id="motivoModalConfirmBtn">Confirmar</button>
+        </div>
+    </div>
+</div>
 
-    <main class="content">
+<div id="historicoModalOverlay" class="modal-overlay">
+    <div class="modal modal-large">
+        <div class="modal-header-row">
+            <h3>Histórico de movimentações</h3>
+            <button class="modal-close-icon" onclick="closeHistorico()">
+                <span class="material-symbols-outlined">close</span>
+            </button>
+        </div>
 
-        <section id="pedidos" class="section active">
-            <h1>Pedidos</h1>
-            <div id="pedidosContainer"></div>
-        </section>
+        <div id="historicoList" class="historico-list"></div>
+    </div>
+</div>
 
-        <section id="estoque" class="section">
+<aside class="sidebar">
 
-            <h1>Estoque</h1>
+    <h2>ERP</h2>
 
-            <div class="estoque-grid">
+    <button class="menu-btn active" data-section="pedidos">Pedidos</button>
+    <button class="menu-btn" data-section="estoque">Estoque</button>
+    <button class="menu-btn" data-section="financeiro">Financeiro</button>
 
-                <div class="table">
+</aside>
 
-                    <div class="table-header">
-                        Produtos
-                    </div>
+<main class="content">
 
-                    <div id="estoqueTable"></div>
+    <section id="pedidos" class="section active">
+        <h1>Pedidos</h1>
+        <div id="pedidosContainer"></div>
+    </section>
 
+    <section id="estoque" class="section">
+
+        <h1>Estoque</h1>
+
+        <div class="estoque-grid">
+
+            <div class="table">
+
+                <div class="table-header">
+                    Produtos
+                    <button class="history-btn" onclick="openHistorico()" title="Histórico de movimentações">
+                        <span class="material-symbols-outlined">history</span>
+                    </button>
                 </div>
 
-                <div class="form-card">
-
-                    <h3>Novo Produto</h3>
-
-<input type="text" name="nome" placeholder="Nome">
-<input type="number" name="preco" placeholder="Preço">
-<select name="categoria">
-    <option value="PASTEL">Pastel</option>
-    <option value="DOCE">Doce</option>
-    <option value="BEBIDA">Bebida</option>
-</select>
-<input type="text" name="URLimagem" placeholder="URL da imagem">
-<textarea name="descricao" placeholder="Descrição"></textarea>
-<input type="number" name="quantidade" placeholder="Quantidade">
-<input type="text" name="tamanho" placeholder="Tamanho (M, P, G)">
-
-                    <button onclick="createProduct()">Criar Produto</button>
-
-                </div>
+                <div id="estoqueTable"></div>
 
             </div>
 
-        </section>
+            <div class="form-card">
 
-        <section id="financeiro" class="section">
-            <h1>Financeiro</h1>
-            <div class="card">
-                Módulo em desenvolvimento
+                <h3>Novo Produto</h3>
+
+                <input type="text" name="nome" placeholder="Nome">
+                <input type="number" name="preco" placeholder="Preço">
+                <select name="categoria">
+                    <option value="PASTEL">Pastel</option>
+                    <option value="DOCE">Doce</option>
+                    <option value="BEBIDA">Bebida</option>
+                </select>
+                <input type="text" name="URLimagem" placeholder="URL da imagem">
+                <textarea name="descricao" placeholder="Descrição"></textarea>
+                <input type="number" name="quantidade" placeholder="Quantidade">
+                <input type="text" name="tamanho" placeholder="Tamanho (M, P, G)">
+
+                <button onclick="createProduct()">Criar Produto</button>
+
             </div>
-        </section>
 
-    </main>
+        </div>
+
+    </section>
+
+    <section id="financeiro" class="section">
+        <h1>Financeiro</h1>
+        <div class="card">
+            Módulo em desenvolvimento
+        </div>
+    </section>
+
+</main>
 
 </div>
 
