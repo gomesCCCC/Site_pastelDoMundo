@@ -40,55 +40,55 @@ public class PedidoService {
         this.pedidoMapper = pedidoMapper;
     }
 
-@Transactional
-public Pedido criarPedidoAberto(Long clienteId, Map<Long, Integer> carrinho) {
+    @Transactional
+    public Pedido criarPedidoAberto(Long clienteId, Map<Long, Integer> carrinho) {
 
-    Cliente cliente = clienteRepository.findById(clienteId)
-            .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+        Cliente cliente = clienteRepository.findById(clienteId)
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
-    Pedido pedido = new Pedido();
+        Pedido pedido = new Pedido();
 
-    pedido.setCliente(cliente);
-    pedido.setNomeCliente(cliente.getNome());
-    pedido.setTelefoneCliente(cliente.getTelefone());
-    pedido.setEnderecoEntrega(cliente.getEndereco());
-    pedido.setCepEntrega(cliente.getCEP());
+        pedido.setCliente(cliente);
+        pedido.setNomeCliente(cliente.getNome());
+        pedido.setTelefoneCliente(cliente.getTelefone());
+        pedido.setEnderecoEntrega(cliente.getEndereco());
+        pedido.setCepEntrega(cliente.getCEP());
 
-    pedido.setStatus(StatusPedido.ABERTO);
+        pedido.setStatus(StatusPedido.ABERTO);
 
-    BigDecimal total = BigDecimal.ZERO;
-    List<ItemPedido> itens = new ArrayList<>();
+        BigDecimal total = BigDecimal.ZERO;
+        List<ItemPedido> itens = new ArrayList<>();
 
-    for (Map.Entry<Long, Integer> entry : carrinho.entrySet()) {
+        for (Map.Entry<Long, Integer> entry : carrinho.entrySet()) {
 
-        Produto produto = produtoRepository.findById(entry.getKey())
-                .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
+            Produto produto = produtoRepository.findById(entry.getKey())
+                    .orElseThrow(() -> new RuntimeException("Produto não encontrado"));
 
-        int quantidade = entry.getValue();
+            int quantidade = entry.getValue();
 
-        if (produto.getQuantidade() < quantidade) {
-            throw new RuntimeException("Estoque insuficiente");
+            if (produto.getQuantidade() < quantidade) {
+                throw new RuntimeException("Estoque insuficiente");
+            }
+
+            BigDecimal subtotal =
+                    produto.getPreco().multiply(BigDecimal.valueOf(quantidade));
+
+            total = total.add(subtotal);
+
+            ItemPedido item = new ItemPedido();
+            item.setPedido(pedido);
+            item.setProduto(produto);
+            item.setQuantidade(quantidade);
+            item.setPrecoUni(produto.getPreco());
+
+            itens.add(item);
         }
 
-        BigDecimal subtotal =
-                produto.getPreco().multiply(BigDecimal.valueOf(quantidade));
+        pedido.setItens(itens);
+        pedido.setTotal(total);
 
-        total = total.add(subtotal);
-
-        ItemPedido item = new ItemPedido();
-        item.setPedido(pedido);
-        item.setProduto(produto);
-        item.setQuantidade(quantidade);
-        item.setPrecoUni(produto.getPreco());
-
-        itens.add(item);
+        return pedidoRepository.save(pedido);
     }
-
-    pedido.setItens(itens);
-    pedido.setTotal(total);
-
-    return pedidoRepository.save(pedido);
-}
 
     public List<pedidoResponseDTO> listarPedido() {
 
@@ -98,34 +98,34 @@ public Pedido criarPedidoAberto(Long clienteId, Map<Long, Integer> carrinho) {
                 .collect(Collectors.toList());
     }
 
-@Transactional
-public void marcarComoPago(Long pedidoId) {
+    @Transactional
+    public void marcarComoPago(Long pedidoId) {
 
-    Pedido pedido = pedidoRepository.findById(pedidoId)
-            .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+        Pedido pedido = pedidoRepository.findById(pedidoId)
+                .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
 
-    if (!pedido.isEstoqueDebitado()) {
-        for (ItemPedido item : pedido.getItens()) {
-            Produto produto = item.getProduto();
-            int quantidade = item.getQuantidade();
+        if (!pedido.isEstoqueDebitado()) {
+            for (ItemPedido item : pedido.getItens()) {
+                Produto produto = item.getProduto();
+                int quantidade = item.getQuantidade();
 
-            if (produto.getQuantidade() < quantidade) {
-                throw new RuntimeException("Estoque insuficiente para finalizar o pedido");
+                if (produto.getQuantidade() < quantidade) {
+                    throw new RuntimeException("Estoque insuficiente para finalizar o pedido");
+                }
+
+                produto.setQuantidade(produto.getQuantidade() - quantidade);
+                produtoRepository.save(produto);
             }
 
-            produto.setQuantidade(produto.getQuantidade() - quantidade);
-            produtoRepository.save(produto);
+            pedido.setEstoqueDebitado(true);
         }
 
-        pedido.setEstoqueDebitado(true);
+        pedido.setStatus(StatusPedido.FINALIZADO);
+
+        pedidoRepository.save(pedido);
     }
 
-    pedido.setStatus(StatusPedido.FINALIZADO);
-
-    pedidoRepository.save(pedido);
-}
-
-public pedidoResponseDTO acharPorIdPedido(Long id) {
+    public pedidoResponseDTO acharPorIdPedido(Long id) {
 
         Pedido pedido = pedidoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
@@ -136,59 +136,86 @@ public pedidoResponseDTO acharPorIdPedido(Long id) {
     private boolean podeAlterarStatus(
         StatusPedido atual,
         StatusPedido novo
-) {
+    ) {
 
-    return switch (atual) {
+        return switch (atual) {
 
-        case ABERTO ->
-                novo == StatusPedido.PROCESSANDO ||
-                novo == StatusPedido.CANCELADO;
+            case ABERTO ->
+                    novo == StatusPedido.PROCESSANDO ||
+                    novo == StatusPedido.CANCELADO;
 
-        case PROCESSANDO ->
-                novo == StatusPedido.FINALIZADO;
+            case PROCESSANDO ->
+                    novo == StatusPedido.FINALIZADO ||
+                    novo == StatusPedido.CANCELADO;
 
-        case FINALIZADO, CANCELADO ->
-                false;
-    };
-}
+            case FINALIZADO, CANCELADO ->
+                    false;
+        };
+    }
 
+    @Transactional
     public pedidoResponseDTO atualizarStatus(Long id, StatusPedido status) {
 
-    Pedido pedido = pedidoRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+        Pedido pedido = pedidoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
 
-    if (!podeAlterarStatus(pedido.getStatus(), status)) {
-        throw new RuntimeException(
-            "Não é possível alterar pedido de "
-            + pedido.getStatus()
-            + " para "
-            + status
-        );
+        if (!podeAlterarStatus(pedido.getStatus(), status)) {
+            throw new RuntimeException(
+                "Não é possível alterar pedido de "
+                + pedido.getStatus()
+                + " para "
+                + status
+            );
+        }
+
+        if (status == StatusPedido.FINALIZADO) {
+            marcarComoPago(id);
+            return acharPorIdPedido(id);
+        }
+
+        if (status == StatusPedido.CANCELADO) {
+            restaurarEstoqueSeNecessario(pedido);
+            pedido.setStatus(StatusPedido.CANCELADO);
+            Pedido atualizado = pedidoRepository.save(pedido);
+            return pedidoMapper.toResponseDTO(atualizado);
+        }
+
+        pedido.setStatus(status);
+        Pedido atualizado = pedidoRepository.save(pedido);
+
+        return pedidoMapper.toResponseDTO(atualizado);
     }
 
-    pedido.setStatus(status);
+    @Transactional
+    public void cancelarPedidoPorId(Long id, Long clienteId) {
 
-    Pedido atualizado = pedidoRepository.save(pedido);
+        Pedido pedido = pedidoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
 
-    return pedidoMapper.toResponseDTO(atualizado);
-}
+        if (!pedido.getCliente().getId().equals(clienteId)) {
+            throw new RuntimeException("Acesso negado");
+        }
 
-public void cancelarPedidoPorId(Long id, Long clienteId) {
+        if (pedido.getStatus() == StatusPedido.CANCELADO) return;
 
-    Pedido pedido = pedidoRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+        restaurarEstoqueSeNecessario(pedido);
 
-    if (!pedido.getCliente().getId().equals(clienteId)) {
-        throw new RuntimeException("Acesso negado");
+        pedido.setStatus(StatusPedido.CANCELADO);
+        pedidoRepository.save(pedido);
     }
 
-    if (pedido.getStatus() == StatusPedido.CANCELADO) return;
+    private void restaurarEstoqueSeNecessario(Pedido pedido) {
 
-    pedido.setStatus(StatusPedido.CANCELADO);
-    pedidoRepository.save(pedido);
-}
+        if (!pedido.isEstoqueDebitado()) {
+            return;
+        }
 
+        for (ItemPedido item : pedido.getItens()) {
+            Produto produto = item.getProduto();
+            produto.setQuantidade(produto.getQuantidade() + item.getQuantidade());
+            produtoRepository.save(produto);
+        }
 
-
-    
+        pedido.setEstoqueDebitado(false);
+    }
 }
