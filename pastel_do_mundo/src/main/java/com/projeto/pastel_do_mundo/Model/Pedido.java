@@ -49,9 +49,10 @@ public class Pedido {
     private String telefoneCliente;
     private String enderecoEntrega;
     private String cepEntrega;
-
-    @Column(name = "estoque_debitado", nullable = false)
     private boolean estoqueDebitado = false;
+
+    @Enumerated(EnumType.STRING)
+    private CanalVenda canalVenda = CanalVenda.SITE_PROPRIO;
 
     public Pedido() {
 
@@ -66,7 +67,6 @@ public class Pedido {
         this.enderecoEntrega = enderecoEntrega;
         this.cepEntrega = cepEntrega;
         this.dataPedido = dataPedido;
-        this.estoqueDebitado = false;
     }
 
     public long getId() {
@@ -151,6 +151,14 @@ public class Pedido {
 
     public void setEstoqueDebitado(boolean estoqueDebitado) {
         this.estoqueDebitado = estoqueDebitado;
+    }
+
+    public CanalVenda getCanalVenda() {
+        return canalVenda;
+    }
+
+    public void setCanalVenda(CanalVenda canalVenda) {
+        this.canalVenda = canalVenda;
     }
 
 
