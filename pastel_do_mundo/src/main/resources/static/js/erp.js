@@ -1,30 +1,83 @@
 document.addEventListener('DOMContentLoaded', () => {
     setupMenu();
     loadPedidos();
-    loadProdutos();
+    setupFinanceiro();
     setupModalDismissal();
     setupMotivoModalConfirm();
 });
 
 function setupMenu() {
+
     const buttons = document.querySelectorAll('.menu-btn');
     const sections = document.querySelectorAll('.section');
 
+
     buttons.forEach(btn => {
+
         btn.addEventListener('click', () => {
+
+
             const target = btn.getAttribute('data-section');
 
-            sections.forEach(s => s.classList.remove('active'));
-            document.getElementById(target).classList.add('active');
 
-            buttons.forEach(b => b.classList.remove('active'));
+            sections.forEach(section => {
+
+                section.classList.remove('active');
+
+            });
+
+
+            document
+                .getElementById(target)
+                .classList.add('active');
+
+
+
+            buttons.forEach(button => {
+
+                button.classList.remove('active');
+
+            });
+
+
             btn.classList.add('active');
 
-            if (target === 'pedidos') {
-                loadPedidos();
+
+
+            switch(target) {
+
+
+                case 'pedidos':
+
+                    loadPedidos();
+
+                    break;
+
+
+
+                case 'estoque':
+
+                    loadProdutos();
+
+                    break;
+
+
+
+                case 'financeiro':
+
+                    loadFinanceiro();
+
+                    break;
+
+
             }
+
+
         });
+
+
     });
+
 }
 
 async function loadPedidos() {

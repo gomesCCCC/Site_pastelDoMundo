@@ -1,0 +1,238 @@
+.financeiro-header {
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:20px;
+
+}
+
+
+.financeiro-header h1 {
+
+    margin:0;
+
+}
+
+
+.financeiro-header p {
+
+    margin:4px 0;
+    color:#777;
+    font-size:14px;
+
+}
+
+
+#periodoFinanceiro {
+
+    padding:10px 14px;
+    border-radius:10px;
+    border:1px solid #ddd;
+
+    background:white;
+
+    font-family:'Poppins', sans-serif;
+
+    cursor:pointer;
+
+}
+
+
+
+.financeiro-cards {
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(4, 1fr);
+
+    gap:15px;
+
+}
+
+
+
+.finance-card {
+
+    background:white;
+
+    border:1px solid #eee;
+
+    border-radius:14px;
+
+    padding:20px;
+
+}
+
+
+.finance-card h3 {
+
+    margin:0;
+
+    font-size:14px;
+
+    color:#777;
+
+}
+
+
+.finance-card strong {
+
+    display:block;
+
+    margin-top:10px;
+
+    font-size:26px;
+
+}
+
+
+
+.finance-card.faturamento {
+
+    border-left:5px solid #f0c14b;
+
+}
+
+
+.finance-card.taxas {
+
+    border-left:5px solid #c62828;
+
+}
+
+
+.finance-card.liquido {
+
+    border-left:5px solid #2e7d32;
+
+}
+
+
+
+.financeiro-section {
+
+    margin-top:25px;
+
+}
+
+
+
+.financeiro-section h2 {
+
+    font-size:18px;
+
+}
+
+
+
+.canal-card {
+
+    background:white;
+
+    border:1px solid #eee;
+
+    border-radius:12px;
+
+    padding:16px;
+
+    margin-bottom:12px;
+
+}
+
+
+.canal-header {
+
+    display:flex;
+
+    justify-content:space-between;
+
+    font-weight:600;
+
+}
+
+
+
+.canal-grid {
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(4,1fr);
+
+    margin-top:15px;
+
+    gap:10px;
+
+}
+
+
+
+.canal-info span {
+
+    display:block;
+
+    color:#777;
+
+    font-size:12px;
+
+}
+
+
+
+.canal-info strong {
+
+    font-size:16px;
+
+}
+
+
+
+.loading {
+
+    color:#777;
+
+}
+
+
+
+@media(max-width:900px){
+
+    .financeiro-cards{
+
+        grid-template-columns:
+        repeat(2,1fr);
+
+    }
+
+
+    .canal-grid{
+
+        grid-template-columns:
+        repeat(2,1fr);
+
+    }
+
+}
+
+
+@media(max-width:600px){
+
+    .financeiro-header{
+
+        flex-direction:column;
+        align-items:flex-start;
+        gap:10px;
+
+    }
+
+
+    .financeiro-cards{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
