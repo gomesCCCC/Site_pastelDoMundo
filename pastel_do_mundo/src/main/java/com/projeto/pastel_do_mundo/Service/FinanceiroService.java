@@ -75,10 +75,19 @@ public class FinanceiroService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    private BigDecimal calcularTaxaDoPedido(Pedido pedido) {
-        BigDecimal taxaPercentual = pedido.getCanalVenda().getTaxaPercentual();
-        return pedido.getTotal().multiply(taxaPercentual).setScale(2, RoundingMode.HALF_UP);
+private BigDecimal calcularTaxaDoPedido(Pedido pedido) {
+
+    if (pedido.getCanalVenda() == null) {
+        return BigDecimal.ZERO;
     }
+
+    BigDecimal taxaPercentual =
+            pedido.getCanalVenda().getTaxaPercentual();
+
+    return pedido.getTotal()
+            .multiply(taxaPercentual)
+            .setScale(2, RoundingMode.HALF_UP);
+}
 
     private BigDecimal calcularTicketMedio(BigDecimal faturamentoBruto, int quantidadePedidos) {
         if (quantidadePedidos == 0) {

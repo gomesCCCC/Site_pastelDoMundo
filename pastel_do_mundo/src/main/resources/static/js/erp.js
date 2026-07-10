@@ -1,9 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
+
     setupMenu();
+
     loadPedidos();
-    setupFinanceiro();
+
+    loadProdutos();
+
     setupModalDismissal();
+
     setupMotivoModalConfirm();
+
 });
 
 function setupMenu() {
@@ -178,9 +184,11 @@ function formatDate(value) {
     }).format(new Date(value));
 }
 
-function formatMoney(value) {
-    return Number(value || 0).toFixed(2).replace('.', ',');
-}
+window.formatMoney = function(value) {
+    return Number(value || 0)
+        .toFixed(2)
+        .replace('.', ',');
+};
 
 function escapeHtml(value) {
     return String(value)

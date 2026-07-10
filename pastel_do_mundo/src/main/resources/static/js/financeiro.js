@@ -1,252 +1,187 @@
-let financeiroCarregado = false;
+document.addEventListener('DOMContentLoaded', () => {
+
+    setupFinanceiro();
+
+});
 
 
-window.setupFinanceiro = function(){
+function setupFinanceiro() {
 
-    const select =
-        document.getElementById('periodoFinanceiro');
+    const botaoFinanceiro =
+        document.querySelector('[data-section="financeiro"]');
 
+    if (!botaoFinanceiro) {
+        return;
+    }
 
-    if(!select) return;
-
-
-    select.addEventListener('change', () => {
-
+    botaoFinanceiro.addEventListener('click', () => {
         loadFinanceiro();
-
     });
 
-};
+    const seletorPeriodo = document.getElementById('periodoFinanceiro');
+
+    if (seletorPeriodo) {
+        seletorPeriodo.addEventListener('change', () => {
+            loadFinanceiro();
+        });
+    }
+}
 
 
-
-window.loadFinanceiro = async function(){
-
-    const periodo =
-    document.getElementById('periodoFinanceiro').value;
-
-
-    const container =
-    document.getElementById('financeiroCards');
+function getPeriodoSelecionado() {
+    const seletor = document.getElementById('periodoFinanceiro');
+    return seletor ? seletor.value : 'MES';
+}
 
 
-    container.innerHTML =
-    `
-    <div class="finance-card loading">
-        Carregando...
+async function loadFinanceiro() {
+
+    const cards = document.getElementById('financeiroCards');
+
+    if (!cards) {
+        console.error('Elemento financeiroCards não encontrado');
+        return;
+    }
+
+    cards.innerHTML = `
+    <div class="card">
+        Carregando financeiro...
     </div>
     `;
 
+    const canaisContainer = document.getElementById('financeiroCanais');
+
+    if (canaisContainer) {
+        canaisContainer.innerHTML = `
+        <div class="card loading">
+            Carregando...
+        </div>
+        `;
+    }
 
     try {
 
+        const periodo = getPeriodoSelecionado();
 
         const response = await fetch(
             `/financeiro/relatorio?periodo=${periodo}`
         );
 
-
-        if(!response.ok){
-
-            throw new Error(
-                await response.text()
-            );
-
+        if (!response.ok) {
+            throw new Error(await response.text());
         }
 
-
-        const dados =
-        await response.json();
-
-
+        const dados = await response.json();
 
         renderFinanceiro(dados);
 
+    } catch (error) {
 
+        console.error('Erro financeiro:', error);
 
-    }catch(error){
-
-        console.error(error);
-
-
-        container.innerHTML =
-        `
-        <div class="finance-card">
+        cards.innerHTML = `
+        <div class="card">
             Erro ao carregar financeiro
         </div>
         `;
 
+        if (canaisContainer) {
+            canaisContainer.innerHTML = '';
+        }
     }
-
-
 }
 
 
+function renderFinanceiro(dados) {
 
-function renderFinanceiro(dados){
-
-
-    const cards =
-    document.getElementById('financeiroCards');
-
+    const cards = document.getElementById('financeiroCards');
 
     cards.innerHTML = `
 
-
     <div class="finance-card">
-
         <h3>Pedidos</h3>
-
-        <strong>
-            ${dados.quantidadePedidos}
-        </strong>
-
+        <strong>${dados.quantidadePedidos ?? 0}</strong>
     </div>
-
-
 
     <div class="finance-card faturamento">
-
         <h3>Faturamento bruto</h3>
-
-        <strong>
-            R$ ${formatMoney(dados.faturamentoBruto)}
-        </strong>
-
+        <strong>R$ ${formatMoney(dados.faturamentoBruto)}</strong>
     </div>
-
-
 
     <div class="finance-card taxas">
-
         <h3>Taxas</h3>
-
-        <strong>
-            R$ ${formatMoney(dados.totalTaxas)}
-        </strong>
-
+        <strong>R$ ${formatMoney(dados.totalTaxas)}</strong>
     </div>
-
-
 
     <div class="finance-card liquido">
-
         <h3>Valor líquido</h3>
-
-        <strong>
-            R$ ${formatMoney(dados.valorLiquido)}
-        </strong>
-
+        <strong>R$ ${formatMoney(dados.valorLiquido)}</strong>
     </div>
-
 
     `;
 
-
     renderCanais(dados.porCanal);
-
 }
 
 
+function renderCanais(canais) {
 
-function renderCanais(canais){
+    const container = document.getElementById('financeiroCanais');
 
+    if (!container) {
+        return;
+    }
 
-    const container =
-    document.getElementById('financeiroCanais');
+    if (!canais || canais.length === 0) {
 
-
-    if(!canais || canais.length === 0){
-
-        container.innerHTML =
-        `
+        container.innerHTML = `
         <div class="card">
             Nenhuma venda encontrada
         </div>
         `;
 
         return;
-
     }
 
-
-
-    container.innerHTML =
-    canais.map(canal => `
-
+    container.innerHTML = canais.map(canal => `
 
         <div class="canal-card">
 
-
             <div class="canal-header">
-
-                <span>
-                    ${canal.canal}
-                </span>
-
-                <span>
-                    ${canal.quantidadePedidos}
-                    pedidos
-                </span>
-
+                <strong>${formatCanal(canal.canal)}</strong>
+                <span>${canal.quantidadePedidos} pedidos</span>
             </div>
-
-
 
             <div class="canal-grid">
 
-
-                <div class="canal-info">
-
+                <div>
                     <span>Bruto</span>
-
-                    <strong>
-                    R$ ${formatMoney(canal.faturamentoBruto)}
-                    </strong>
-
+                    <strong>R$ ${formatMoney(canal.faturamentoBruto)}</strong>
                 </div>
 
-
-
-                <div class="canal-info">
-
+                <div>
                     <span>Taxas</span>
-
-                    <strong>
-                    R$ ${formatMoney(canal.totalTaxas)}
-                    </strong>
-
+                    <strong>R$ ${formatMoney(canal.totalTaxas)}</strong>
                 </div>
 
-
-
-                <div class="canal-info">
-
+                <div>
                     <span>Líquido</span>
-
-                    <strong>
-                    R$ ${formatMoney(canal.valorLiquido)}
-                    </strong>
-
+                    <strong>R$ ${formatMoney(canal.valorLiquido)}</strong>
                 </div>
-
 
             </div>
 
-
         </div>
 
-
     `).join('');
-
 }
 
 
+function formatCanal(canal) {
+    const nomes = {
+        SITE_PROPRIO: 'Site Próprio',
+        IFOOD: 'iFood'
+    };
 
-function formatMoney(value){
-
-    return Number(value || 0)
-        .toFixed(2)
-        .replace('.',',');
-
+    return nomes[canal] || canal;
 }
