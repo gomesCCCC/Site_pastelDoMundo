@@ -10,7 +10,7 @@ A parte responsável pelo funcionamento do site,controllers,services e o código
 
 A interface foi criado em cima de CSS,HTML e Thymeleaf por melhor compatibilidade com um design simples porém agrádavel e prático de usar sem poluição e complexidade desnecessária, o JavaScript está sendo aplicado aos pouco para melhor interatividade e navegação melhor via DOM e fetch.
 
-*-FLUXO DE FUNCIONAMENTO-*
+**-FLUXO DE FUNCIONAMENTO-
 
 <img width="907" height="451" alt="cardapio" src="https://github.com/user-attachments/assets/47464656-d9ec-4b3f-a321-3b0588a4a364" />
 
@@ -35,7 +35,7 @@ o pedido vai para a page de administração do qual vai avaliar o pedido podendo
 <img width="714" height="207" alt="status processando" src="https://github.com/user-attachments/assets/2476f20d-1a63-4e8b-9d1f-3143afe6b875" />
 <img width="706" height="200" alt="status finalizado" src="https://github.com/user-attachments/assets/83994df9-7ac1-451d-91ec-6a67b79534f9" />
 
-***OBS: após a mudança de status o sistemma já desconta os produtos do pedido no estoque como deve funcionar em um sistema desse tipo***
+***OBS: após a mudança de status o sistema já desconta os produtos do pedido no estoque como deve funcionar em um sistema desse tipo***
 
 <img width="214" height="374" alt="icon meus pedidos" src="https://github.com/user-attachments/assets/6e7ad2e0-31a2-4e16-85b3-a45f408da687" />
 <img width="741" height="192" alt="meus pedidos" src="https://github.com/user-attachments/assets/61729386-26ef-42d5-87ef-fabb25c1df4a" />
@@ -53,6 +53,44 @@ e tem um fácil sistema de cadastro para caso precisar adicionar mais um produto
 <img width="905" height="293" alt="financeiro" src="https://github.com/user-attachments/assets/63ab1f35-84b5-4013-98d7-6254a8bc1673" />
 
 contabiliza todos os ganhos dividios em mês,semana e dia, está em um estado bem prematuro então por enquanto não uma funcionalidade real
+
+## Como rodar
+
+não é uma etapa complexa mas vai exigir um requisito que seria a versão java 17 ou mais, depois disso antes de rodar será necessário criar um banco de dados MySQL apenas com ```CREATE DATABASE pastel_db;``` o resto do banco vai ser criado pela dependência do JPA, agora com o banco funcionando você vai criar uma senha e nome para ele atráves do arquivo application.properties e você deverá colocar nesse formato:
+
+spring.datasource.url=jdbc:mysql://localhost:3306/PASTEL_DB
+spring.datasource.driverClassName=com.mysql.cj.jdbc.Driver
+spring.datasource.username=${DB_USER}  
+spring.datasource.password=${DB_PASS}  - (método usado pra esconder senha e nome)
+
+tanto o username e password são informações que você pode colocar da sua escolha contando que não compartilhe elas, teoricamente isso já seria o suficiente para o site rodar, mas nesse ponto não existe nenhum produto e Admin criado no banco de dados afetando a navegação completa, não existe um método dentro do site para criar uma conta Admin somente pelo proprío banco de dado e o Spring security, o primeiro passo é ir até o código SegunrancaConfig e adicionar esse trecho:
+
+    public static void main(String[] args) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
+        // Substitua "123456" pela a senha que quiser
+        System.out.println(encoder.encode("123456"));
+    }
+
+isso é importante por que o funcionamento do Spring security estranharia e daria erro se fosse colocado direto pelo MySQL, nessa ocasião ele vai converte a senha que você colocou e vai retornar a versão criptografada dela, com base nisso coloque no MySQL esse código (com o banco de dados JÁ existindo):
+
+INSERT INTO admin (nome, email, senha, ativo)
+VALUES (
+    'Administrador',
+    'admin@email.com',
+    '(senha criptografada)',
+    true
+);
+
+agora com um admin já no banco, você vai acessar o HTTP ---http://localhost:8080/admin/login--- que vai rediciona-lo para a tela de login Admin, agora simplesmente coloque a senha e email para ter acesso ao ERP
+
+<img width="920" height="430" alt="Captura de tela 2026-07-13 133402" src="https://github.com/user-attachments/assets/ee55789b-9be8-4f00-adde-675f9529e7d8" />
+
+
+após isso você já consegue cadastrar novos produtos mas se quiser apenas ter uma lista pré-definida de produto copie essa tabela e insira no MySQl:
+
+[Uploading linha de produto.txt…]()
+
 
 
 ## Tecnologias
