@@ -1,4 +1,4 @@
-[linha de produto.txt](https://github.com/user-attachments/files/29975027/linha.de.produto.txt)# Site_pastelDoMundo
+# Site_pastelDoMundo
 
 Esse site está sendo desenvolvido para a função de delivery com a proposta der um site fléxivel, com uma interface mais agrádavel tanto para o cliente para com o dono do qual será o controlador, o sistema do site foi montado ao todo para seguir um fluxo intuitivo, além da função de cardápio o site já conta com uma single-page administrativa com pedido,estoque e financeiro sendo o acesso dessa página protegido por spring security.
 
@@ -89,55 +89,7 @@ agora com um admin já no banco, você vai acessar o HTTP ---http://localhost:80
 
 após isso você já consegue cadastrar novos produtos mas se quiser apenas ter uma lista pré-definida de produto copie essa tabela e insira no MySQl:
 
-[Uploading linhaINSERT INTO produto 
-(id, urlimagem, descricao, nome, preco, quantidade, tamanho, categoria, ativo)
-VALUES
-(2, 'pasteldomundo_pastel grecia.avif', 'Mix de queijos com creme de queijo artesanal, cheddar, provolone e muçarela, finalizado com toque de orégano turco. Intenso, derretido e irresistível', 'Pastel Grécia', 22.00, 49, 'G', 'PASTEL', TRUE),
-
-(3, 'pasteldomundo_pastel brasil.avif', 'Carne moída, frango com toque de curry, calabresa, lombo, parmesão e muito creme de queijo. Recheio completo, intenso e extremamente cremoso', 'Pastel Brasil', 23.50, 36, 'G', 'PASTEL', TRUE),
-
-(4, 'pasteldomundo_pastel sydney.avif', 'Lombo canadense defumado com milho salteado e toque de tomilho, finalizado com requeijão cremoso. Sabor suave e marcante', 'Pastel Sydney', 24.90, 35, 'G', 'PASTEL', TRUE),
-
-(6, 'pasteldomundo_pastel frança.avif', 'Frango em cubos ao molho pesto com parmesão e creme de queijo. Aromático e sofisticado na medida certa.', 'Pastel França', 26.00, 39, 'G', 'PASTEL', TRUE),
-
-(9, 'pasteldomundo_pastel são paulo.avif', 'Carne bovina moída bem temperada com toque de ervas. Clássico de respeito.', 'Pastel São Paulo', 23.00, 35, 'G', 'PASTEL', TRUE),
-
-(20, 'coca-coal 350ml.webp', 'Bebida como acompanhamento', 'Coca-cola 350ML', 7.00, 29, 'M', 'BEBIDA', TRUE),
-
-(21, 'coca-cola 1L.webp', 'Bebida como acompanhamento', 'Coca-cola 1L', 11.00, 19, 'M', 'BEBIDA', TRUE),
-
-(22, 'pasteldomundo_pastel áfrica do sul.jpg', 'Palmito com alho-poró envolvido em creme de queijo artesanal. Suave, elegante e muito cremoso.', 'Pastel África do Sul', 30.99, 30, 'M', 'PASTEL', TRUE),
-
-(23, 'pasteldomundo_pastel buenos aires.jpg', 'Doce de leite cremoso com banana in natura. Simples, cremoso e irresistível.', 'Pastel Buenos Aires', 22.99, 29, 'M', 'DOCE', TRUE),
-
-(24, 'pasteldomundo_pastel camboja.avif', 'Banana in natura com toque especial de canela. Suave e extremamente aconchegante.', 'Pastel Camboja', 16.99, 20, 'M', 'DOCE', TRUE),
-
-(25, 'pasteldomundo_pastel canela 4 leite.jpg', 'Descrição de teste', 'Pastel Canela 4 Leite', 22.99, 20, 'M', 'DOCE', TRUE),
-
-(26, 'pasteldomundo_pastel capadócia.avif', 'Creme artesanal de chocolate com amendoim crocante.', 'Pastel Capadócia', 22.99, 20, 'M', 'DOCE', TRUE),
-
-(27, 'pasteldomundo_pastel genebra.avif', 'Nutella com leite Ninho integral. Cremoso, intenso e um dos mais pedidos', 'Pastel Genebra', 26.99, 30, 'M', 'DOCE', TRUE),
-
-(28, 'pasteldomundo_pastel gramado.avif', 'Creme artesanal de chocolate extremamente cremoso. Clássico perfeito e saboroso.', 'Pastel Gramado', 21.99, 30, 'M', 'DOCE', TRUE),
-
-(29, 'pasteldomundo_pastel italia.avif', 'Carne moída temperada com páprica, molho de tomate artesanal, pepperoni e muçarela com toque de manjericão. Rico e encorpado.', 'Pastel Itália', 32.99, 20, 'M', 'PASTEL', FALSE),
-
-(30, 'pasteldomundo_pastel luxemburgo.avif', 'Nutella com creme de chocolate meio amargo e avelãs torradas. Sabor intenso e extremamente sofisticado.', 'Pastel Luxemburgo', 26.99, 20, 'M', 'DOCE', TRUE),
-
-(31, 'pasteldomundo_pastel minas gerais.avif', 'Goiabada cremosa com muçarela derretida. Combinação brasileira clássica que nunca falha.', 'Pastel Minas Gerais', 22.99, 30, 'M', 'DOCE', FALSE),
-
-(32, 'pasteldomundo_pastel nova york.avif', 'Descrição de teste', 'Pastel Nova York', 26.99, 10, 'M', 'DOCE', FALSE),
-
-(33, 'pasteldomundo_pastel pari romantico.avif', 'Descrição de teste', 'Pastel Paris', 26.99, 30, 'M', 'DOCE', FALSE),
-
-(34, 'pasteldomundo_pastel porto de galinhas.avif', 'Frango desfiado bem temperado. Sabor caseiro que agrada todo mundo.', 'Pastel Porto de Galinhas', 31.99, 30, 'M', 'PASTEL', TRUE),
-
-(35, 'pasteldomundo_pastel portugal.avif', 'Calabresa refogada com cebola, ovo, tomate e azeitonas, envolvida em requeijão cremoso. Sabor caseiro e marcante.', 'Pastel Portugal', 32.99, 30, 'M', 'PASTEL', TRUE),
-
-(36, 'pasteldomundo_pastel rancho queimado.avif', 'Creme artesanal de chocolate com morangos frescos. Leve, delicado e extremamente saboroso.', 'Pastel Rancho Queimado', 25.99, 30, 'M', 'DOCE', TRUE),
-
-(37, 'pasteldomundo_pastel suiça.avif', 'Creme artesanal de chocolate meio amargo com ganache de chocolate branco com chocoboll crocante. Equilíbrio perfeito entre cremosidade e crocância.', 'Pastel Suíça', 25.99, 30, 'M', 'DOCE', TRUE); de produto.txt…]()
-
+[linha de produto.txt](https://github.com/user-attachments/files/29975027/linha.de.produto.txt)
 
 
 ## Tecnologias
