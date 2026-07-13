@@ -12,11 +12,11 @@ A interface foi criado em cima de CSS,HTML e Thymeleaf por melhor compatibilidad
 
 -FLUXO DE FUNCIONAMENTO-
 
-![](<img width="907" height="451" alt="cardapio" src="https://github.com/user-attachments/assets/d141ebdc-ecdd-4c83-a869-8ab150d6e054" />)
+<img width="907" height="451" alt="cardapio" src="https://github.com/user-attachments/assets/47464656-d9ec-4b3f-a321-3b0588a4a364" />
 
 Ao acessar o site você já se depara com a lista dos produtos do quais o delivery vende divididos por cada categoria:Pastel,Bedidas e doces e cada um deles pode ser selecionado e adicionado ao carrinho(lembre-se que algumas features apenas funcionam quando o cliente está logado e cadastrado no sistema) 
 
-![](<img width="436" height="437" alt="carrinho" src="https://github.com/user-attachments/assets/5aef553d-9352-4601-bffd-9e99b3057bf1" />)
+<img width="436" height="437" alt="carrinho" src="https://github.com/user-attachments/assets/96c052f5-23eb-4e0f-8dbb-29400a1d60da" />
 
 Os produtos de interesse são adicionados no carrinho já somando o valor total, além da opção que torna possível retirar um dos produtos se necessário
 
@@ -34,6 +34,7 @@ o pedido vai para a page de administração do qual vai avaliar o pedido podendo
 
 <img width="714" height="207" alt="status processando" src="https://github.com/user-attachments/assets/2476f20d-1a63-4e8b-9d1f-3143afe6b875" />
 <img width="706" height="200" alt="status finalizado" src="https://github.com/user-attachments/assets/83994df9-7ac1-451d-91ec-6a67b79534f9" />
+
 OBS: após a mudança de status o sistemma já desconta os produtos do pedido no estoque como deve funcionar em um sistema desse tipo
 
 <img width="214" height="374" alt="icon meus pedidos" src="https://github.com/user-attachments/assets/6e7ad2e0-31a2-4e16-85b3-a45f408da687" />
