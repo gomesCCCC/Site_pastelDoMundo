@@ -2,15 +2,15 @@
 
 Esse site está sendo desenvolvido para a função de delivery com a proposta der um site fléxivel, com uma interface mais agrádavel tanto para o cliente para com o dono do qual será o controlador, o sistema do site foi montado ao todo para seguir um fluxo intuitivo, além da função de cardápio o site já conta com uma single-page administrativa com pedido,estoque e financeiro sendo o acesso dessa página protegido por spring security.
 
--Backend-
+*-Backend-*
 
 A parte responsável pelo funcionamento do site,controllers,services e o código ao todo são feito através do java Spring-Boot (DevTools e Lombok) utilizando dessa ferramenta para a criação de API REST que foram testados no postman para antes serem aplicados para interação do site, o banco de dados utilizado foi MySQL via JPA e H2 com 7 tabelas cadastrados.
 
--Frontend-
+*-Frontend-*
 
 A interface foi criado em cima de CSS,HTML e Thymeleaf por melhor compatibilidade com um design simples porém agrádavel e prático de usar sem poluição e complexidade desnecessária, o JavaScript está sendo aplicado aos pouco para melhor interatividade e navegação melhor via DOM e fetch.
 
--FLUXO DE FUNCIONAMENTO-
+*-FLUXO DE FUNCIONAMENTO-*
 
 <img width="907" height="451" alt="cardapio" src="https://github.com/user-attachments/assets/47464656-d9ec-4b3f-a321-3b0588a4a364" />
 
@@ -35,7 +35,7 @@ o pedido vai para a page de administração do qual vai avaliar o pedido podendo
 <img width="714" height="207" alt="status processando" src="https://github.com/user-attachments/assets/2476f20d-1a63-4e8b-9d1f-3143afe6b875" />
 <img width="706" height="200" alt="status finalizado" src="https://github.com/user-attachments/assets/83994df9-7ac1-451d-91ec-6a67b79534f9" />
 
-OBS: após a mudança de status o sistemma já desconta os produtos do pedido no estoque como deve funcionar em um sistema desse tipo
+***OBS: após a mudança de status o sistemma já desconta os produtos do pedido no estoque como deve funcionar em um sistema desse tipo***
 
 <img width="214" height="374" alt="icon meus pedidos" src="https://github.com/user-attachments/assets/6e7ad2e0-31a2-4e16-85b3-a45f408da687" />
 <img width="741" height="192" alt="meus pedidos" src="https://github.com/user-attachments/assets/61729386-26ef-42d5-87ef-fabb25c1df4a" />
@@ -55,7 +55,23 @@ e tem um fácil sistema de cadastro para caso precisar adicionar mais um produto
 contabiliza todos os ganhos dividios em mês,semana e dia, está em um estado bem prematuro então por enquanto não uma funcionalidade real
 
 
+## Tecnologias
 
+### Backend
+- Java 17
+- Spring Boot
+- Spring Security
+- Spring Data JPA
+- Hibernate
+- MySQL
+- H2 Database
+- Maven
+
+### Frontend
+- HTML5
+- CSS3
+- Thymeleaf
+- JavaScript
 
 
 
